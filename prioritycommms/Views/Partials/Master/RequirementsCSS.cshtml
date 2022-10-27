@@ -1,0 +1,37 @@
+﻿@using Smidge
+@*
+    Add reference to each added CSS file here
+*@
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap" rel="stylesheet" />
+<link href="https://code.jquery.com/ui/1.13.0/themes/smoothness/jquery-ui.css" rel="stylesheet" />
+@*<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous">*@
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+@{
+    string[] cssArray = {
+        "~/css/typography.css",
+        "~/css/Environment.css",
+        "~/css/stickyfooter.css", 
+        "~/css/AdminWidget.css",
+        "~/css/topheader.css",
+        "~/css/Navigation.css",
+        "~/css/PageFooter.css",
+        "~/css/imageButton.css",
+        "~/css/imageContent.css",
+        "~/css/banner.css",
+        "~/css/videoButton.css",
+        "~/css/numbering.css",
+        "~/css/profileSlider.css",
+        "~/css/iconlinks.css",
+        "~/css/socialmedia.css",
+        "~/css/clientSlider.css",
+        "~/css/news.css",
+        "~/css/articles.css",
+        "~/css/aboutUs.css",
+        "~/css/contactUs.css",
+        "~/css/projects.css"
+    };
+
+    SmidgeHelper.CreateCssBundle("styles").RequiresCss(cssArray);
+}

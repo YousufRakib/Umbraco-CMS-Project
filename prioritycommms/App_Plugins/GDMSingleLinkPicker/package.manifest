@@ -1,0 +1,16 @@
+﻿{
+    "propertyEditors": [
+      {
+        "alias": "gdmsingleLinkPicker",
+        "name": "GDM Single Link Picker",
+        "isParameterEditor": true,
+        "editor": {
+          "view": "~/App_Plugins/GDMSingleLinkPicker/singlelinkpicker.html",
+          "valueType": "JSON"
+        }
+      }
+    ],
+  "javascript": [
+    "~/App_Plugins/GDMSingleLinkPicker/singlelinkpicker.controller.js"
+  ]
+}

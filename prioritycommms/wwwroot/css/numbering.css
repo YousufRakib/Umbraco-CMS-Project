@@ -1,0 +1,21 @@
+.numbering {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    background-color: #151515;
+}
+
+.numbering p {
+    color: #FFFFFF;
+    text-align: center;
+    font-family: Bahnschrift SemiBold;
+    font-size: 20px;
+}
+
+.numbering h1 {
+    color: #FDD201;
+    text-align: center;
+    font-family:Cambria;
+    font-weight:600;
+}

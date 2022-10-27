@@ -1,0 +1,93 @@
+.gdm-slick-container .gdm-slick-carousel .slick-slide img {
+    margin: auto;
+}
+
+.gdm-slick-container {
+    background: #222;
+}
+
+    .gdm-slick-container .slick-arrow {
+        position: absolute;
+        display: block;
+        padding: 0;
+        top: 50%;
+        /*height: 100%;*/
+        /*width: 15%;*/
+        padding: 0 12px;
+        cursor: pointer;
+        color: #FFF !important;
+        border: none;
+        outline: none;
+        background: transparent;
+        text-shadow: 1px 1px 4px #000;
+        -webkit-transform: translate(0, -50%);
+        -ms-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        font-size: 42px !important;
+    }
+
+    /*.slick-arrow i {
+        position: absolute;
+        opacity: 0.5;
+        font-size: 42px !important;
+        top: 50%;
+        -webkit-transform: translate(0, -50%);
+        -ms-transform: translate(0, -50%);
+        transform: translate(0, -50%);
+        transition: opacity ease 0.2s;
+    }*/
+
+        .gdm-slick-container .slick-arrow:hover i {
+            opacity: 1;
+        }
+
+    .gdm-slick-container .gdm-slick-prev {
+        position: absolute;
+        left: 0;
+        z-index: 100;
+        cursor: pointer;
+    }
+
+    .gdm-slick-container .gdm-slick-next {
+        /*position: absolute;*/
+        /*text-align: right;*/
+        right: 0;
+        z-index: 100;
+        cursor: pointer;
+    }
+
+/*a.slick-slide {
+    height: 100%;
+    width: 100%;
+    cursor: default;
+}*/
+
+    .gdm-slick-container .slick-slide img {
+        max-width: 100%;
+    }
+
+    .gdm-slick-container .slick-name {
+        position: absolute;
+        width: 100%;
+        padding: 8px 18px;
+        color: #FFF;
+        font-weight: 500;
+        text-shadow: 1px 1px 4px #000;
+        background: rgba(0, 0, 0, 0.4);
+    }
+
+    .gdm-slick-container .gdm-slick-carousel-nav .thumb {
+        padding: 10px;
+        outline: none;
+    }
+
+        .gdm-slick-container .gdm-slick-carousel-nav .thumb img {
+            box-shadow: 1px 2px 2px rgba(0, 0, 0, 0.5);
+        }
+
+    .gdm-slick-container .gdm-slick-carousel-nav .slick-slide img {
+        border: 3px solid transparent;
+    }
+    .gdm-slick-container .gdm-slick-carousel-nav .slick-slide.slick-center img {
+        border: 3px solid white;
+    }

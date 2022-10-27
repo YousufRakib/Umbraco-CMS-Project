@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMMultiText;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string?>("items"));
+    List<MultiText>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<MultiText>>();   
+}
+
+
+<div class="numbering">
+    <div class="container">
+        <div class="row">
+            <div class="m-auto p-4">
+                <div class="d-md-flex">
+                    @if (items?.Count > 0)
+                    {
+                        @foreach (MultiText item in items)
+                        {
+                            <div class="col-md-3 col-12">
+                                <div class="p-2 p-md-0">
+                                    <h1>@item.TopText</h1>
+                                    <p>@item.BottomText</p>
+                                </div>
+                            </div>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

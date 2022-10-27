@@ -1,0 +1,47 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoStandardTypes
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@{
+    IPublishedContent? root = Model.Root();
+    string? phone = root == null ? null : root.Value<string>("phone");
+    string? trophy = root == null ? null : root.Value<string>("trophy");
+    string? batch = root == null ? null : root.Value<string>("batch");
+}
+
+<div class="topheader">
+    <div class="container-lg px-0 px-md-2 px-lg-0">
+        <div class="d-flex justify-content-between">
+            <div class=" d-none d-md-flex">
+                <div class=" d-flex align-items-center">
+                    @if (!string.IsNullOrWhiteSpace(trophy))
+                    {
+                        <img src="~/img/trophy.png" />
+
+                        <p class="pt-3 ps-1">@trophy</p>
+                    }
+                </div>
+                <div class=" ps-4 d-flex align-items-center">
+                    @if (!string.IsNullOrWhiteSpace(batch))
+                    {
+                        <img src="~/img/batch.png" />
+
+                        <p class="pt-3 ps-1">@batch</p>
+                    }
+                </div>
+            </div>
+            
+            <div class=" d-flex align-items-center ps-4 ps-md-0">
+                @if (!string.IsNullOrWhiteSpace(phone))
+                {
+                    <img src="~/img/phone_icon.png" />
+
+                    <p class="ps-2 my-auto">@phone</p>
+                }
+            </div>
+            <div class="d-flex d-md-none align-items-center justify-content-end ">
+                @await Html.PartialAsync("Master/QuoteButton")
+            </div>
+        </div>
+    </div>
+</div>

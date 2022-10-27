@@ -1,0 +1,10 @@
+﻿
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@using GDMUmbracoStandardTypes
+@{
+    Layout = "MasterPage.cshtml";
+}
+<div class="main-content">
+    @Html.GetGridHtml(Model, StandardTypeConstants.ContentPropertyAlias, "Bootstrap5")
+</div>

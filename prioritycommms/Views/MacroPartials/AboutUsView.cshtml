@@ -1,0 +1,84 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+
+    string? imageIdVal = (string?)Model.MacroParameters["coverPhoto"];
+    IPublishedContent? image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = image != null;
+
+    string? title1 = (string?)Model.MacroParameters["title1"];
+    string? content1 = (string?)Model.MacroParameters["content1"];
+    string? title2 = (string?)Model.MacroParameters["title2"];
+    string? content2 = (string?)Model.MacroParameters["content2"];
+    string? title3 = (string?)Model.MacroParameters["title3"];
+    string? content3 = (string?)Model.MacroParameters["content3"];
+
+    string? image1IdVal = (string?)Model.MacroParameters["image1"];
+    IPublishedContent? image1 = !string.IsNullOrWhiteSpace(image1IdVal) ? Umbraco.Media(image1IdVal) : null;
+
+    string? image2IdVal = (string?)Model.MacroParameters["image2"];
+    IPublishedContent? image2 = !string.IsNullOrWhiteSpace(image2IdVal) ? Umbraco.Media(image2IdVal) : null;
+
+    string? image3IdVal = (string?)Model.MacroParameters["image3"];
+    IPublishedContent? image3 = !string.IsNullOrWhiteSpace(image3IdVal) ? Umbraco.Media(image3IdVal) : null;
+}
+
+<div class="aboutusview">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="coverPhoto">
+                @if (valid)
+                {
+                    <img src="@image?.Url()" alt="@image?.Name" />
+                    <h1 class="text-black text-center heading-bordered">@title</h1>
+                }
+            </div>
+
+            <div class="aboutuscontent">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="left">
+                            <h5>@title1</h5>
+                            <p>@content1</p>
+
+                            <h5>@title2</h5>
+                            <p>@content2</p>
+
+                            <h5>@title3</h5>
+                            <p>@content3</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="right">
+                            <div class="row">
+                                <div class="col-6">
+                                    <div class="row">
+                                        <div class="col-12">
+                                            <img src="@image1?.Url()" alt="@image1?.Name" />
+                                        </div>
+
+                                        <div class="col-12">
+                                            <img src="@image2?.Url()" alt="@image2?.Name" />
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <img src="@image3?.Url()" alt="@image3?.Name" />
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

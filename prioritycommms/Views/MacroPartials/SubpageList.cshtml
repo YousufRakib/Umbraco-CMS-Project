@@ -1,0 +1,81 @@
+﻿@using Umbraco.Cms.Core.Models
+@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@{
+    bool isrenderedInBackOffice = !UmbracoContext.IsFrontEndUmbracoRequest();
+}
+@if (isrenderedInBackOffice)
+{
+    <div class="alert alert-info">Sub Page List</div>
+}
+@{
+    var navElements = Model.Content.Children().Where(p => p.IsVisible() && !p.Value<bool>("umbracoNaviHide"));
+    string? orderby = Model.MacroParameters.ContainsKey("orderBy") ? (string?)Model.MacroParameters["orderBy"] : "date";
+    bool orderByDescending = Model.MacroParameters.ContainsKey("order") ? ((int)Model.MacroParameters["order"]) == 1 : false;
+
+    IEnumerable<IPublishedContent> pages;
+    switch (orderby)
+    {
+        case "alpha":
+            pages = orderByDescending ? navElements.OrderByDescending(p => p.Name) : navElements.OrderBy(p => p.Name);
+            break;
+        case "logical":
+            pages = orderByDescending ? navElements.OrderByDescending(p => p.SortOrder) : navElements.OrderBy(p => p.SortOrder);
+            break;
+        case "date":
+        default:
+            pages = orderByDescending ? navElements.OrderByDescending(p => p.CreateDate) : navElements.OrderBy(p => p.CreateDate);
+            break;
+    }
+
+    string noPages = (string)Model.MacroParameters["noPages"];
+}
+@if (pages.Count() > 0)
+{
+
+    <div class="subpagelist">
+
+
+        <div class="row">
+            @foreach (IPublishedContent item in pages)
+            {
+                var url = item.Url();
+                string target = null;
+                if (item.ContentType.Alias == "redirectPage")
+                {
+                    Link link = item.Value<Link>("redirect");
+                    if (link != null)
+                    {
+                        target = link.Target;
+                    }
+                }
+                HtmlString bgStyle = new HtmlString("");
+                var picture = item.Value<IPublishedContent>("teaserImage");
+                if (picture != null)
+                {
+                    var pictureUrl = picture.GetCropUrl(width: 300);
+                    bgStyle = new HtmlString($"style=\"background-image: url('{pictureUrl}');\"");
+                }
+                <div class="col-6 col-xl-4 col-lg-3">
+                    <a href="@url">
+                        <div class="item" @(bgStyle)>
+                            <div class="title">@item.Name</div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    </div>
+}
+else
+{
+    if (!String.IsNullOrWhiteSpace(noPages))
+    {
+        <div class="spl-root">
+            <div>@noPages</div>
+        </div>
+    }
+    else if (isrenderedInBackOffice)
+    {
+        <div class="alert alert-danger">This page has no sub-pages</div>
+    }
+}

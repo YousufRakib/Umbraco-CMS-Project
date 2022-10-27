@@ -1,0 +1,17 @@
+
+.environment {
+    padding: 6px;
+    text-align: center;
+    font-weight: bold;
+    font-size: 20px;
+}
+
+.environment-Development {
+    background-color: #ccccff; /* light blue */
+    color: #000000;
+}
+
+.environment-Staging {
+    background-color: #ffffcc; /* light yellow*/
+    color: #ff0000;
+}

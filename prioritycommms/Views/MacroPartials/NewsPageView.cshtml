@@ -1,0 +1,49 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMMultiNews;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+
+    string? imageIdVal = (string?)Model.MacroParameters["coverPhoto"];
+    IPublishedContent? image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = image != null;
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string>("items"));
+    List<MultiNews>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<MultiNews>>();
+
+}
+
+<div class="coverPhoto">
+    @if (valid)
+    {
+        <img src="@image?.Url()" alt="@image?.Name" />
+        <h1 class="text-black text-center heading-bordered">@title</h1>
+    }
+</div>
+
+<div class="common">
+    <div class="row">
+        @foreach (MultiNews item in items == null ? new List<MultiNews>() : items)
+        {
+            var itemImage = Umbraco.Media(item.ImageId == null ? 0 : item.ImageId);
+            <div class="col-md-3 col-12">
+                <div class="bg-white m-0 m-md-2 mb-4">
+                    <div class="_border">
+                        <img class="img-responsive" src="@itemImage?.GetCropUrl(width: 220, height: 150,imageCropMode: ImageCropMode.Crop)" alt="@image?.Name" />
+                        <p class="title">@item.Title</p>
+                        <p class="description">@item.Content</p>
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+</div>
+

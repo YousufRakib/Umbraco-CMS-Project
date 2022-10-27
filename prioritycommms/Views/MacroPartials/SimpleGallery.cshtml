@@ -1,0 +1,128 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net
+@using Umbraco.Cms.Core.Models
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    var imglist = ((string?)Model.MacroParameters["images"])?.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
+    IEnumerable<IPublishedContent> imgcol = imglist == null ? new List<IPublishedContent>() : Umbraco.Media(imglist).Where(x => x != null);
+
+    List<IPublishedContent> images = new List<IPublishedContent>();
+
+    foreach (var item in imgcol)
+    {
+        if (item.ContentType.Alias == "Image")
+        {
+            images.Add(item);
+        }
+        else
+        {
+            images.AddRange(item.Descendants().Where(p => p.ContentType.Alias == "Image"));
+        }
+    }
+
+    Shuffle(images);
+
+    string id = Guid.NewGuid().ToString().Substring(0, 8);
+
+    string sizeThumb = "128";
+
+    string sizeSelected = "512";
+
+    string sizeFull = "1200";
+
+    /* Autoplay */
+    string autoplaySpeed = "5000";
+
+    string? autoplay = (string?)Model.MacroParameters["autoplay"];
+    bool bautoplay = (!String.IsNullOrEmpty(autoplay) && (autoplay.ToLower() == "true" || autoplay == "1"));
+
+}
+@if (isrenderedInBackOffice)
+{
+    <div class="alert alert-info">
+        Simple Gallery
+    </div>
+    <ul>
+        <li>
+            <strong>Images :</strong>
+            @(images.Count > 0 ? string.Format("{0} Images", images.Count) : "No Images")
+            <ul>
+                @foreach (var image in images)
+                {
+                    <li>@image.Name, @image.Url()</li>
+                }
+            </ul>
+        </li>
+        <li><strong>Thumbnail size:</strong> @sizeThumb</li>
+        <li><strong>Selected image size:</strong> @sizeSelected</li>
+        <li><strong>Full image max size:</strong> @sizeFull</li>
+        <li><strong>Autoplay:</strong> @(autoplay == "0" ? "No" : "Yes")</li>
+        <li><strong>Autoplay Speed:</strong> @autoplaySpeed (ms)</li>
+    </ul>
+
+    if (images.Count() == 0)
+    {
+        <div class="alert alert-danger">No Images Selected</div>
+    }
+}
+else if (images.Count() > 0)
+{
+    <div class="simplegallery" @Html.Raw(bautoplay ? "data-gdm-slick-autoplay=\"" + autoplaySpeed + "\"" : "")>
+        <div class="row">
+            <div class="col-lg-8">
+                <div id="mi-slick-@id" class="mi-slick">
+                    @foreach (var image in images)
+                    {
+                        <a href="@image.Url()?&width=@sizeFull&mode=max"
+                   data-lightbox="image-@id-@image.Id"
+                   data-title="@image?.Name?.Replace(".jpg", "").Replace(".JPG", "")"
+                   style="background-image: url('@image?.GetCropUrl(height: 537, width: 814)');">
+                            <span class="inner">
+                            </span>
+                        </a>
+                    }
+                </div>
+            </div>
+            <div class="col-lg-4 thumbs h-100">
+                <div class="row g-0 h-100">
+                    <div class="col-6 h-100">
+                        @{
+                            var idx = 0;
+                        }
+                        @foreach (var image in images.Take(4))
+                        {
+                            var bgStyle = $"background-image:url('{image.GetCropUrl(height: 110, width: 160)}')";
+                            <div class="thumb" data-idx="@(idx++)" style="@bgStyle">@*<img src="@image.GetCropUrl(height: 110, width: 160)" alt="@image.Name" />*@</div>
+                        }
+                    </div>
+                    <div class="col-6">
+                        @foreach (var image in images.Skip(4).Take(4))
+                        {
+                            var bgStyle = $"background-image:url('{image.GetCropUrl(height: 110, width: 160)}')";
+                            <div class="thumb" data-idx="@(idx++)" style="@bgStyle">@*<img src="@image.GetCropUrl(height: 110, width: 160)" alt="@image.Name" />*@</div>
+                        }
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
+@{
+    void Shuffle<IPublishedContent>(IList<IPublishedContent> list)
+    {
+        Random rng = new Random();
+        int n = list.Count;
+        while (n > 1)
+        {
+            n--;
+            int k = rng.Next(n + 1);
+            IPublishedContent value = list[k];
+            list[k] = list[n];
+            list[n] = value;
+        }
+    }
+}

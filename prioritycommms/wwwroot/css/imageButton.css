@@ -1,0 +1,53 @@
+.imagebutton {
+    width: 100%;
+    margin: 2% 0%;
+}
+
+.imagebutton .main-title {
+    border-bottom: 10px solid #FDD201;
+    width: fit-content;
+    margin-top: 2%;
+}
+
+.imagebutton .main-title h2 {
+    margin: auto;
+    margin: 0;
+    margin-bottom: -6%;
+    color: #525252;
+    font-family: Bahnschrift SemiBold;
+}
+
+@media (min-width: 768px) {
+    .imagebutton .content {
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 14px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (max-width: 767px) {
+    .imagebutton .content {
+        width: 100%;
+        text-align: left;
+        margin: auto;
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+.imagebutton .bottom-button {
+    width: 100%;
+    color: #4D420F;
+}
+
+.imagebutton .bottom-button a{
+    text-align: center;
+    border-radius:0;
+    margin:auto;
+    background-color: #FDD201;
+    font-family: Bahnschrift SemiBold;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}

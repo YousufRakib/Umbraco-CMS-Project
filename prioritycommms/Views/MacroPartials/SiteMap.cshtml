@@ -1,0 +1,54 @@
+﻿@using System.Linq;
+@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+    IPublishedContent? rootPage = null;
+    string? rootPageUdi = Model.MacroParameters["RootPage"]?.ToString();
+    if (!string.IsNullOrWhiteSpace(rootPageUdi))
+    {
+        rootPage = Umbraco.Content(rootPageUdi);
+    }
+}
+@if (isrenderedInBackOffice)
+{
+    <div class="alert alert-info">Site Map</div>
+    <ul>
+        <li><strong>Root Page:</strong> @(rootPage == null ? "" : rootPage.Url())</li>
+    </ul>
+    if (rootPage == null)
+    {
+        <div class="alert alert-danger">Select a root page</div>
+    }
+}
+else if (rootPage != null)
+{
+    <div class="sitemap">
+        @{
+            ListNodes(rootPage, 0);
+        }
+    </div>
+}
+
+@functions {
+    void ListNodes(IPublishedContent? startNode, int level)
+    {
+        if (level < 4 && startNode != null)
+        {
+            var children = startNode.Children?.Where(p => p.IsVisible() && !p.Value<bool>("umbracoNaviHide"));
+            if (children != null && children.Count() > 0)
+            {
+                <ul>
+                    @foreach (var node in children)
+                    {
+                        <li>
+                            <a href="@node.Url()" title="@node.Name" class="link">@node.Name</a>
+                            @{
+                                ListNodes(node, level + 1);
+                            }
+                        </li>
+                    }
+                </ul>
+            }
+        }
+    }
+}

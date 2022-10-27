@@ -1,0 +1,47 @@
+﻿<div ng-controller="GDMOverlay.Editor.Controller">
+    <form name="contentForm" novalidate val-form-manager>
+        <umb-editor-view>
+            <umb-editor-header name="model.title"
+                               name-locked="!model.titleEditable"
+                               hide-alias="true"
+                               hide-icon="true"
+                               hide-description="true">
+            </umb-editor-header>
+            <ng-form name="parameterFormTest">
+
+            </ng-form>
+
+            <umb-editor-container>
+                <umb-box ng-repeat="prop in model.properties">
+                    <umb-box-content class="block-form">
+                        <ng-form name="parameterForm" class="show-validation" ng-class="{'ng-invalid': prop.invalid }">
+                            <div class="control-group" ng-class="{'error': prop.invalid }">
+                                <div ng-show="prop.invalid" class="alert alert-error property-error">Value cannot be empty</div>
+                                <umb-control-group label="{{prop.label}}" description="{{prop.description}}" ng-required="prop.required">
+                                    <umb-property-editor model="prop"></umb-property-editor>
+                                </umb-control-group>
+                            </div>
+                        </ng-form>
+                    </umb-box-content>
+                </umb-box>
+            </umb-editor-container>
+
+            <umb-editor-footer>
+                <umb-editor-footer-content-right>
+                    <umb-button type="button"
+                                button-style="link"
+                                label-key="general_close"
+                                shortcut="esc"
+                                action="close()">
+                    </umb-button>
+                    <umb-button type="button"
+                                button-style="action"
+                                label-key="general_submit"
+                                action="submit()">
+                    </umb-button>
+                </umb-editor-footer-content-right>
+            </umb-editor-footer>
+
+        </umb-editor-view>
+    </form>
+</div>

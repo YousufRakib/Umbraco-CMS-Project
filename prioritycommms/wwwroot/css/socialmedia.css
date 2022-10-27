@@ -1,0 +1,116 @@
+.multiplesocialmedia {
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    padding-top: 4%;
+    padding-bottom: 5%;
+}
+
+.multiplesocialmedia .main-title{
+    text-align: center;
+    /*justify-content:center;
+    display: flex;*/
+    border-bottom: 10px solid #FDD201;
+    margin: auto;
+    width: fit-content;
+    /*left: 0px;
+    right: 0px;*/
+}
+
+
+.multiplesocialmedia .main-title h2 {
+    margin: auto;
+    margin: 0;
+    margin-bottom: -5.5%;
+    color: #525252;
+    font-family:Bahnschrift SemiBold;
+}
+
+@media (min-width: 768px) {
+    .multiplesocialmedia .content {
+        width: 50%;
+        text-align: center;
+        margin: auto;
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (max-width: 767px) {
+    .multiplesocialmedia .content {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (min-width: 768px) {
+    .multiplesocialmedia .socialMedia {
+        width: 96%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .multiplesocialmedia .socialMedia {
+        width: 100%;
+        margin: auto;
+        padding: 8%;
+    }
+}
+
+.multiplesocialmedia ._border {
+    border: 3px solid #FCDE4C;
+    padding: 5%;
+}
+
+.multiplesocialmedia ._border .title {
+    letter-spacing: -1px;
+    color: #000000;
+    font-family: Bahnschrift SemiBold;
+    margin-top:5%;
+    margin-bottom:5%;
+    font-weight:bold;
+    text-align:center;
+}
+
+.multiplesocialmedia ._border .description {
+    font-size: 12px;
+    color: #A2A2A2;
+    font-weight:600;
+    font-family: Bahnschrift Light;
+    text-align:center;
+}
+
+
+.multiplesocialmedia ._border button {
+    border-radius: 0;
+    width: 100%;
+    text-align: center;
+    background-color: #FDD201;
+    font-family: Bahnschrift SemiBold;
+}
+
+.multiplesocialmedia .load-more{
+    border-radius:0; 
+}
+
+
+.multiplesocialmedia .bottom-button {
+    text-align: center;
+    width: 100%;
+}
+
+.multiplesocialmedia .bottom-button button{
+    text-align: center;
+    border-radius:0;
+    margin:auto;
+    background-color: #FDD201;
+    font-family: Bahnschrift SemiBold;
+}

@@ -1,0 +1,78 @@
+.contactusview {
+    width: 100%;
+    background-color: #F8F8F8
+}
+
+.contactusview .row{
+    margin: 0 !important;
+}
+
+.contactusview .row .col-md-12{
+    padding:0 !important;
+}
+
+.contactusview .coverPhoto {
+    position: relative;
+    text-align: center;
+    color: white;
+}
+
+.contactusview .coverPhoto h1{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.contactusview .contactuscontent {
+    background-color: #FFFFFF;
+    padding:2%;
+}
+
+.contactusview .contactuscontent .left{
+    text-align: center;
+    padding: 4% 15% 0% 25%
+}
+
+.contactusview .contactuscontent .left h3{
+    color: #525252;
+    font-family: Bahnschrift SemiBold;
+}
+
+
+.contactusview .contactuscontent .left p{
+    color: #7A7A7A;
+    font-weight: 600;
+    font-size: 13px;
+    font-family: Bahnschrift Light;
+    padding-top: 2%;
+}
+.contactusview .contactuscontent .right{
+    text-align: left;
+    padding: 4% 15% 0% 5%
+}
+
+.contactusview .contactuscontent .right h6{
+    text-align: left;
+    color: #525252;
+    font-family: Bahnschrift SemiBold;
+}
+
+.contactusview .contactuscontent .right a{
+    color: #525252;
+    padding: 0% 4% 0% 0%;
+}
+
+.contactusview .contactuscontent .right .row .col-12:nth-child(1){
+    margin-bottom: 5% !important;
+}
+
+.contactusview .contactuscontent .right .row .col-12:nth-child(2) svg,
+.contactusview .contactuscontent .right .row .col-12:nth-child(3) svg,
+.contactusview .contactuscontent .right .row .col-12:nth-child(4) svg{
+    color: #FDD201;
+}
+
+.contactusview .contactuscontent .right .row .col-12 p{
+    font-family: Bahnschrift Light;
+}

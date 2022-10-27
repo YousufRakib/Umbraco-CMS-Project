@@ -1,0 +1,245 @@
+﻿@using GDMUmbracoNews
+@using GDMUmbracoCommon
+@using GDMUmbracoStandardTypes
+@using Microsoft.AspNetCore.Http.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+    var rootArticlePage = NewsPackageHelper.GetRoot(Model);
+    ArticleListModel? articleListModel = ViewData["ArticleListModel"] as ArticleListModel;
+    string? heading = GDMWebHelper.GetHeading(Model);
+    string? subHeading = Model.Value<string>(StandardTypeConstants.SubHeadingPropertyAlias);
+    string articleDisplayDate = NewsPackageHelper.ArticleDisplayDate(Model);
+}
+<div class="articlepage">
+    <div class="container">
+        <div class="row">
+            @if (rootArticlePage != null)
+            {
+                @* The design does not have left navigation*@
+                @*<div class="col-md-3">
+                    <div class="bootstrap-vertical-nav leftnav">
+                        <button class="btn d-md-none" type="button" data-bs-toggle="collapse" data-bs-target="#newsNav">
+                            <i title="menu" class="fas fa-bars"></i>
+                            <span>Menu</span>
+                        </button>
+                        <div class="d-md-block collapse" id="newsNav">
+                            @{
+                                LeftNavigation(rootArticlePage, 0);
+                            }
+                        </div>
+                    </div>
+                </div>*@
+            }
+            <div class="col-12">
+                <div>
+                    <h1>@heading</h1>
+                    @if (!string.IsNullOrWhiteSpace(subHeading))
+                    {
+                        <h2>@subHeading</h2>
+                    }
+                    @if (articleDisplayDate != null)
+                    {
+                        <h5>@articleDisplayDate</h5>
+                    }
+                </div>
+                <div>
+                    @Html.GetGridHtml(Model, "content", "Bootstrap5")
+                </div>
+                @if (!NewsPackageHelper.IsArticle(Model))
+                {
+                    if (NewsPackageHelper.IsEventsDocument(Model))
+                    {
+                        if (Model.ContentType.Alias == NewsPackageHelper.GetRootAlias(Model))
+                        {
+                            EventsCalendar(articleListModel);
+                        }
+                        ArticleList(articleListModel.GetEventsPages(0), articleListModel.ReadMoreLinkText);
+                    }
+                    if (NewsPackageHelper.IsNewsDocument(Model))
+                    {
+                        ArticleList(articleListModel.GetNewsPages(0), articleListModel.ReadMoreLinkText);
+                    }
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+@functions {
+    public void EventsCalendar(ArticleListModel articleListModel)
+    {
+        var url = UriHelper.GetDisplayUrl(Context.Request);
+        <div class="EventsCalendar">
+            <table>
+                <tr class="calendarTitle">
+                    <td>
+                        <a href="@articleListModel.GetMonthUrl(-1, url)">
+                            <i class="fas fa-angle-left"></i>
+                        </a>
+                    </td>
+                    <td colspan="5">
+                        @(string.Format("{0:MMMM yyyy}", articleListModel.GetStartDate()))
+                    </td>
+                    <td>
+                        <a href="@articleListModel.GetMonthUrl(1, url)">
+                            <i class="fas fa-angle-right"></i>
+                        </a>
+                    </td>
+                </tr>
+                <tr>
+                    <th class="calendarDayHeader">S</th>
+                    <th class="calendarDayHeader">M</th>
+                    <th class="calendarDayHeader">T</th>
+                    <th class="calendarDayHeader">W</th>
+                    <th class="calendarDayHeader">T</th>
+                    <th class="calendarDayHeader">F</th>
+                    <th class="calendarDayHeader">S</th>
+                </tr>
+                @{
+                    var eventDates = articleListModel.GetDatesWithEventsInMonth();
+                    int weeks = eventDates.Count() / 7;
+                    for (int week = 1; week <= weeks; week++)
+                    {
+                        <tr>
+                            @for (int dayOfWeek = 0; dayOfWeek < 7; dayOfWeek++)
+                            {
+                                var eventDate = eventDates[((week - 1) * 7) + dayOfWeek];
+                                DateTime eDate = eventDate.DateOfEvent;
+                                string className = "calendarOtherMonth";
+                                if (eventDate.IsCurrentMonth)
+                                {
+                                    if (eventDate.NumberOfEvents > 0)
+                                    {
+                                        className = "calendarEventDay";
+                                    }
+                                    else
+                                    {
+                                        className = "calendarDay";
+                                    }
+                                }
+
+                                if (articleListModel.Day.HasValue && articleListModel.Month.HasValue && articleListModel.Year.HasValue)
+                                {
+                                    if (eDate.Day == articleListModel.Day.Value && eDate.Month == articleListModel.Month.Value && eDate.Year == articleListModel.Year.Value)
+                                    {
+                                        className += " selected";
+                                    }
+                                }
+                                <td class="@className">
+                                    @if (eventDate.NumberOfEvents > 0)
+                                    {
+                                        @Html.Raw("<a href=\"" + ArticleListModel.GetUrl(eDate.Year, eDate.Month, eDate.Day, url) + "\">")
+                                    }
+                                    @eventDate.DateOfEvent.Day
+                                    @if (eventDate.NumberOfEvents > 0)
+                                    {
+                                        @Html.Raw("</a>")
+                                    }
+                                </td>
+                            }
+                        </tr>
+                    }
+                }
+            </table>
+        </div>
+        <h2>@articleListModel.DisplayDate</h2>
+    }
+
+    public void ArticleList(List<IPublishedContent> nodes, string readMoreText)
+    {
+        @* To get exact design as per requirement, This design have to change*@
+        @*
+        <div class="spl-root">
+            @foreach (var node in nodes)
+            {
+                <div class="row">
+                    @if (node.HasProperty("teaserImage") && node.HasValue("teaserImage"))
+                    {
+                        var picture = node.Value<IPublishedContent>("teaserImage");
+                        if (picture != null && picture.IsPublished())
+                        {
+                            <div class="spl-img col-auto">
+                                <a href="@node.Url()" title="@node.Name">
+                                    <img src="@picture.Url()?width=300&height=200&mode=crop" alt="@node.Name" />
+                                </a>
+                            </div>
+                        }
+                    }
+                    <div class="col">
+                        <div class="spl-title"><a href="@node.Url()">@GDMWebHelper.GetHeading(node)</a></div>
+                        <div class="spl-date">@NewsPackageHelper.ArticleShortDate(node)</div>
+                        <div class="spl-text">
+                            @GDMWebHelper.GetSummaryText(node, 90, true)
+                            @if (!string.IsNullOrWhiteSpace(readMoreText))
+                            {
+                                <a href="@node.Url()" title="@GDMWebHelper.GetPageTitle(node)">@readMoreText</a>
+                            }
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+        *@
+
+        
+        <div class="row">
+            @foreach (var node in nodes)
+            {
+                <div class="col-md-3 col-12">
+                        <div class="bg-white m-0 m-md-2 mb-4">
+                            <div class="_border">
+
+                                @if (node.HasProperty("teaserImage") && node.HasValue("teaserImage"))
+                                {
+                                    var picture = node.Value<IPublishedContent>("teaserImage");
+                                    if (picture != null && picture.IsPublished())
+                                    {
+                                        <a href="@node.Url()" title="@node.Name">
+                                            <img class="img-responsive" src="@picture?.GetCropUrl(width: 220, height: 150)" alt="@node?.Name" />
+                                        </a>
+                                    }
+                                }
+
+                                <p class="title"><a href="@node?.Url()">@GDMWebHelper.GetHeading(node)</a></p>
+                                <p class="description">
+                                    @GDMWebHelper.GetSummaryText(node, 90, true)
+                                </p>
+                                
+                                @if (!string.IsNullOrWhiteSpace(readMoreText))
+                                {
+                                    <a href="@node.Url()" title="@GDMWebHelper.GetPageTitle(node)">@readMoreText</a>
+                                }
+                            </div>
+                        </div>
+                </div>
+            }
+        </div>
+    }
+
+    public void LeftNavigation(IPublishedContent node, int level)
+    {
+        var children = node.Children().Where(p => p.IsPublished() && p.IsVisible());
+        if (children != null && children.Count() > 0)
+        {
+            <ul class="nav flex-column">
+                @foreach (var child in children)
+                {
+                    var active = child.IsAncestorOrSelf(Model);
+                    <li class="nav-item">
+                        <a class="nav-link@(active ? " active" : "")" href="@child.Url()">@child.Name</a>
+                        @if (child.IsAncestorOrSelf(Model))
+                        {
+                            <div>
+                                @{
+                                    LeftNavigation(child, level + 1);
+                                }
+                            </div>
+                        }
+                    </li>
+                }
+            </ul>
+        }
+    }
+}

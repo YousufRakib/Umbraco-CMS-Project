@@ -1,0 +1,16 @@
+﻿{
+    "propertyEditors": [
+      {
+        "alias": "multiLinkPicker",
+        "name": "Multiple Link Picker",
+        "isParameterEditor": true,
+        "editor": {
+          "view": "~/App_Plugins/GDMMultiLinkPicker/multilinkpicker.html",
+          "valueType": "JSON"
+        }
+      }
+    ],
+  "javascript": [
+    "~/App_Plugins/GDMMultiLinkPicker/multilinkpicker.controller.js"
+  ]
+}

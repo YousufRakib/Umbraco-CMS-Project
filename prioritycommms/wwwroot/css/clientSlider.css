@@ -1,0 +1,115 @@
+@media (min-width: 768px) {
+    .clientsslider {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 4%;
+        padding-bottom: 2%;
+    }
+}
+
+@media (max-width: 767px) {
+    .clientsslider {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 12%;
+        padding-bottom: 4%;
+    }
+}
+
+.clientsslider .main-title {
+    text-align: center;
+    border-bottom: 10px solid #FDD201;
+    margin: auto;
+    width: fit-content;
+}
+
+.clientsslider .main-title h2 {
+    margin: auto;
+    margin: 0;
+    margin-bottom: -8%;
+    color: #FFFFFF;
+    font-family: Bahnschrift SemiBold;
+}
+
+@media (min-width: 768px) {
+    .clientsslider .content {
+        width: 50%;
+        text-align: center;
+        margin: auto;
+        color: #E2E2E2;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (max-width: 767px) {
+    .clientsslider .content {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        color: #E2E2E2;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (min-width: 768px) {
+    .clientsslider .clients {
+        width: 90%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .clientsslider .clients {
+        width: 100%;
+        margin: auto;
+    }
+}
+
+
+.clientsslider .clients ._border {
+    height: 100%;
+    width: 100%;
+    text-align: center;
+}
+
+
+
+@media (min-width: 768px) {
+    .clientsslider .clients ._border .quote-light_image-wrap {
+        border: 10px solid hsla(0,0%,89%,.37);
+        border-radius: 50%;
+        display: inline-block;
+        margin-bottom: 8%;
+    }
+}
+
+@media (max-width: 767px) {
+    .clientsslider .clients ._border .quote-light_image-wrap {
+        width:65%;
+        border: 10px solid hsla(0,0%,89%,.37);
+        border-radius: 50%;
+        display: inline-block;
+        margin-bottom: 15%;
+    }
+}
+
+.clientsslider .clients ._border .quote-light_image {
+    border-radius: 50%;
+    display: inline-block;
+    position: relative;
+    z-index: 2;
+}
+
+.clientsslider .clients ._border .description {
+    font-size: 14px;
+    color: #E2E2E2;
+    font-family: Bahnschrift Light;
+    text-align: left;
+    padding: 0% 4%;
+    padding-bottom: 8%;
+    text-align: center;
+}

@@ -1,0 +1,160 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage<dynamic>
+@using System.Web
+@using Microsoft.AspNetCore.Html
+@using Newtonsoft.Json.Linq
+@using Microsoft.CSharp.RuntimeBinder
+@{
+    bool modelIsValid = false;
+    try
+    {
+        if (Model != null && Model.sections != null)
+        {
+            modelIsValid = true;
+        }
+    }
+    catch (RuntimeBinderException)
+    {
+        modelIsValid = false;
+    }
+}
+
+@if (modelIsValid)
+{
+    var oneColumn = ((System.Collections.ICollection)Model.sections).Count == 1;
+    <div class="umb-grid">
+        @if (oneColumn)
+        {
+            foreach (var section in Model.sections)
+            {
+                <div class="grid-section">
+                    @foreach (var row in section.rows)
+                    {
+                        renderRow(row, true);
+                    }
+                </div>
+            }
+        }
+        else
+        {
+            <div class="container">
+                <div class="row clearfix">
+                    @foreach (var s in Model.sections)
+                    {
+
+                        <div class="col-md-@s.grid column">
+                            @foreach (var row in s.rows)
+                            {
+                                renderRow(row, false);
+                            }
+                        </div>
+
+                    }
+                </div>
+            </div>
+        }
+    </div>
+}
+
+@functions{
+
+    private async Task renderRow(dynamic row, bool singleColumn)
+    {
+    JObject rowConfig = row.config;
+    var fullwidthConfig = rowConfig == null ? null : rowConfig.Properties().FirstOrDefault(p => p.Name == "fullwidth");
+    bool fullwidth = fullwidthConfig == null ? false : fullwidthConfig.Value.ToString() == "1";
+    <div @RenderElementAttributes(row)>
+        @if (singleColumn && !fullwidth)
+        {
+            @:<div class="container">
+            }
+        @if (!fullwidth)
+        {
+            @:<div class="row">
+            }
+        @foreach (var area in row.areas)
+        {
+            JObject cfg = area.config;
+
+            var mobilecolsProp = rowConfig == null ? null : rowConfig.Properties().FirstOrDefault(p => p.Name == "mobilecols");
+            if (cfg != null && cfg.Properties().FirstOrDefault(p => p.Name == "mobilecols") != null)
+            {
+                mobilecolsProp = cfg.Properties().FirstOrDefault(p => p.Name == "mobilecols");
+            }
+            string mobilecols = mobilecolsProp == null ? "" : mobilecolsProp.Value.ToString();
+
+
+            var mobileorderProp = rowConfig == null ? null : rowConfig.Properties().FirstOrDefault(p => p.Name == "mobileorder");
+            if (cfg != null && cfg.Properties().FirstOrDefault(p => p.Name == "mobileorder") != null)
+            {
+                mobileorderProp = cfg.Properties().FirstOrDefault(p => p.Name == "mobileorder");
+            }
+            string mobileorder = mobileorderProp == null ? "" : mobileorderProp.Value.ToString();
+
+            if (!fullwidth)
+            {
+                @:<div class="col-lg-@area.grid@(string.IsNullOrWhiteSpace(mobilecols) ? Html.Raw("") : Html.Raw(" col-md-" + mobilecols))@(string.IsNullOrWhiteSpace(mobileorder) ? "" : " mobileorder-" + mobileorder) column">
+                    }
+
+                    <div @RenderElementAttributes(area)>
+                        @foreach (var control in area.controls)
+                        {
+                            <div class="@control.editor.alias">
+                                @if (control != null && control.editor != null && control.editor.view != null)
+                                {
+                                    <text>@await Html.PartialAsync("grid/editors/base", (object)control)</text>
+                                }
+                            </div>
+                        }
+                    </div>
+
+                    if (!fullwidth)
+                    {
+                    @:</div>
+                }
+            }
+        @if (!fullwidth)
+        {
+        @:</div>
+    }
+        @if (singleColumn && !fullwidth)
+        {
+        @:</div>
+    }
+    </div>
+    }
+}
+
+@functions {
+    public static HtmlString RenderElementAttributes(dynamic contentItem)
+    {
+        var attrs = new List<string>();
+        JObject cfg = contentItem.config;
+
+        if (cfg != null)
+            foreach (JProperty property in cfg.Properties().Where(p => p.Name != "mobilecols" && p.Name != "mobileorder" && p.Name != "fullwidth"))
+            {
+                var propertyValue = HttpUtility.HtmlAttributeEncode(property.Value.ToString());
+                attrs.Add(property.Name + "=\"" + propertyValue + "\"");
+            }
+
+        JObject style = contentItem.styles;
+
+        if (style != null)
+        {
+            var cssVals = new List<string>();
+            foreach (JProperty property in style.Properties())
+            {
+                var propertyValue = property.Value.ToString();
+                if (string.IsNullOrWhiteSpace(propertyValue) == false)
+                {
+                    cssVals.Add(property.Name + ":" + propertyValue + ";");
+                }
+            }
+
+            if (cssVals.Any())
+                attrs.Add("style=\"" + HttpUtility.HtmlAttributeEncode(string.Join(" ", cssVals)) + "\"");
+        }
+
+        return new HtmlString(string.Join(" ", attrs));
+    }
+}

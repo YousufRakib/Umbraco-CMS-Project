@@ -1,0 +1,26 @@
+﻿
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoStandardTypes
+@{
+    Layout = "MasterPage.cshtml";
+    IPublishedContent root = Model.Root();
+
+    /* Heading */
+    string heading = Model.Name;
+    if (Model.HasValue(StandardTypeConstants.HeadingPropertyAlias))
+    {
+        heading = Model.Value<string>(StandardTypeConstants.HeadingPropertyAlias);
+    }
+    string subHeading = Model.Value<string>(StandardTypeConstants.SubHeadingPropertyAlias);
+}
+<div class="main-content">
+    <div class="container">
+
+        <h1>@heading</h1>
+        @if (!string.IsNullOrWhiteSpace(subHeading))
+        {
+            <h2>@subHeading</h2>
+        }
+    </div>
+    @Html.GetGridHtml(Model, StandardTypeConstants.ContentPropertyAlias, "Bootstrap5")
+</div>

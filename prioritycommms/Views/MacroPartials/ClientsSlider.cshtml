@@ -1,0 +1,58 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMMultiClient;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+    string? content = (string?)Model.MacroParameters["content"];
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string>("items"));
+    List<MultiClient>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<MultiClient>>();
+
+    bool valid = items != null && items.Count() > 0;
+}
+
+<div class="clientsslider">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="main-title">
+                    <h2>@title</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="content">
+                    <p class="mb-5 mt-4">@content</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    <div class="clients">
+                        <div class="d-md-flex justify-content-center">
+                            @foreach (MultiClient item in items == null ? new List<MultiClient>() : items)
+                            {
+                                var image = Umbraco.Media(item.ImageId == null ? 0 : item.ImageId);
+                                <div class="col-md-8 col-12">
+                                    <div class="_border">
+                                        <div class="quote-light_image-wrap">
+                                            <img class="quote-light_image img-responsive" src="@image?.GetCropUrl(imageCropMode: ImageCropMode.Crop)" data-pagespeed-url-hash="1804530320" onload="pagespeed.CriticalImages.checkImageForCriticality(this);" />
+                                        </div>
+                                        <p class="description">@item.Content</p>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

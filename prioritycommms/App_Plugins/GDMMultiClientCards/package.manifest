@@ -1,0 +1,29 @@
+﻿{
+  "gridEditors": [
+    {
+      "name": "Icon Links",
+      "alias": "iconlinksmacro",
+      "view": "macro",
+      "icon": "icon-link",
+      "config": {
+        "macroAlias": "IconLinks"
+      }
+    }
+  ],
+  "propertyEditors": [
+    {
+      "alias": "GDM.GDMMultiClientCards",
+      "name": "GDM Multi Client Cards",
+      "icon": "icon-thumbnail-list",
+      "isParameterEditor": true,
+      "editor": {
+        "view": "~/App_Plugins/GDMMultiClientCards/multiclientcards.html",
+        "valueType": "JSON"
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GDMOverlay/overlayhelper.js",
+    "~/App_Plugins/GDMMultiClientCards/MultiClientCards.controller.js"
+  ]
+}

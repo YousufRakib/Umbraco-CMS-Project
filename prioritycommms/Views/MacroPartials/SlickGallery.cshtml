@@ -1,0 +1,123 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net
+@using Umbraco.Cms.Core.Models
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    var imglist = ((string?)Model.MacroParameters["images"])?.Split(new string[] { "," }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse);
+    IEnumerable<IPublishedContent> imgcol = imglist == null ? new List<IPublishedContent>() : Umbraco.Media(imglist).Where(x => x != null);
+
+    List<IPublishedContent> images = new List<IPublishedContent>();
+
+    foreach (var item in imgcol)
+    {
+        if (item.ContentType.Alias == "Image")
+        {
+            images.Add(item);
+        }
+        else
+        {
+            images.AddRange(item.Descendants().Where(p => p.ContentType.Alias == "Image"));
+        }
+    }
+
+    string id = new Random().Next().ToString("X8");
+
+    string? sizeThumb = Model.MacroParameters["sizeThumb"] as string;
+    if (String.IsNullOrEmpty(sizeThumb) || sizeThumb == "null")
+    {
+        sizeThumb = "128";
+    }
+
+    string? sizeSelected = (string?)Model.MacroParameters["sizeSelected"];
+    if (String.IsNullOrEmpty(sizeSelected) || sizeSelected == "null")
+    {
+        sizeSelected = "512";
+    }
+
+    string? sizeFull = (string?)Model.MacroParameters["sizeFull"];
+    if (String.IsNullOrEmpty(sizeFull) || sizeFull == "null")
+    {
+        sizeFull = "1200";
+    }
+
+    /* Autoplay */
+    string? autoplaySpeed = (string?)Model.MacroParameters["autoplaySpeed"];
+    if (String.IsNullOrEmpty(autoplaySpeed) || autoplaySpeed == "null")
+    {
+        autoplaySpeed = "5000";
+    }
+
+    string? autoplay = (string?)Model.MacroParameters["autoplay"];
+    bool bautoplay = (!String.IsNullOrEmpty(autoplay) && (autoplay.ToLower() == "true" || autoplay == "1"));
+
+    /* BG Color */
+    string? bgcolor = (string?)Model.MacroParameters["bg"];
+    if (bgcolor?.Length > 0)
+    {
+        bgcolor = String.Format(" style=\"background: {0}\"", WebUtility.HtmlEncode(bgcolor.Replace("\"", "")));
+    }
+    var first = true;
+}
+@if (isrenderedInBackOffice)
+{
+    <div class="alert alert-info">
+        Gallery
+    </div>
+    <ul>
+        <li>
+            <strong>Images :</strong>
+            @(images.Count > 0 ? string.Format("{0} Images", images.Count) : "No Images")
+            <ul>
+                @foreach (var image in images)
+                {
+                    <li>@image.Name</li>
+                }
+            </ul>
+        </li>
+        <li><strong>Background Colour:</strong> @(bgcolor?.Length > 0 ? (string?)Model.MacroParameters["bg"] : "Not Specified")</li>
+        <li><strong>Thumbnail size:</strong> @sizeThumb</li>
+        <li><strong>Selected image size:</strong> @sizeSelected</li>
+        <li><strong>Full image max size:</strong> @sizeFull</li>
+        <li><strong>Autoplay:</strong> @(autoplay == "0" ? "No" : "Yes")</li>
+        <li><strong>Autoplay Speed:</strong> @autoplaySpeed (ms)</li>
+    </ul>
+
+    if (images.Count() == 0)
+    {
+        <div class="alert alert-danger">No Images Selected</div>
+    }
+}
+else if (images.Count() > 0)
+{
+    <div class="gdm-slick-container" @Html.Raw(bgcolor)>
+        <div id="gdm-slick-@id" class="gdm-slick-carousel" data-gdm-slick-nav-for="gdm-slick-nav-@id" @Html.Raw(bautoplay ? "data-gdm-slick-autoplay=\"" + autoplaySpeed + "\"" : "")>
+
+            @foreach (var image in images)
+            {
+                <a href="@image.Url()?width=@sizeFull&mode=max" data-lightbox="image-@id-@image.Id" data-title="@image?.Name?.Replace(".jpg", "").Replace(".JPG", "")" @*style="height: @{ @sizeSelected }px;"*@>
+                    <span class="slick-name">@image?.Name?.Replace(".jpg", "").Replace(".JPG", "")</span>
+                    <span @*style="height: @{ @sizeSelected }px;"*@>
+                        @if (first)
+                        {
+                            <img src="@image?.Url()?height=@sizeSelected" alt="@image?.Name" />
+                        }
+                        else
+                        {
+                            <img data-lazy="@image?.Url()?height=@sizeSelected" alt="@image?.Name" />
+                        }
+                    </span>
+                </a>
+                first = false;
+            }
+        </div>
+        <div id="gdm-slick-nav-@id" class="gdm-slick-carousel-nav" data-gdm-slick-nav-for="gdm-slick-@id">
+            @foreach (var image in images)
+            {
+                <div class="thumb"><img src="@image.Url()?width=@sizeThumb&height=@sizeThumb&mode=crop" /></div>
+            }
+        </div>
+    </div>
+}

@@ -1,0 +1,16 @@
+﻿{
+	"propertyEditors": [
+		{
+			"alias": "EmbedVideo",
+			"name": "Embed Video",
+			"isParameterEditor": true,
+			"editor": {
+				"view": "~/App_Plugins/GDMEmbedVideo/EmbedVideo.html",
+				"valueType": "TEXT"
+			}
+		}
+	],
+	"javascript": [
+		"~/App_Plugins/GDMEmbedVideo/EmbedVideo.controller.js"
+	]
+}

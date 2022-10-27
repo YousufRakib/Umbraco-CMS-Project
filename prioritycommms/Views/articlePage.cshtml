@@ -1,0 +1,62 @@
+﻿@using Smidge
+@using GDMUmbracoNews
+@using GDMUmbracoCommon
+@using Microsoft.AspNetCore.Http.Extensions
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using ContentModels = Umbraco.Cms.Web.Common.PublishedModels;
+@{
+
+    var rootArticlePage = NewsPackageHelper.GetRoot(Model);
+    bool isEventPage = NewsPackageHelper.IsEventsDocument(Model);
+    bool isNewsPage = NewsPackageHelper.IsNewsDocument(Model);
+    int? maxItemsValue = null;
+
+    // We are showing all news articles
+    //if (rootArticlePage != null && Model.Id == rootArticlePage.Id)
+    //{
+    //    maxItemsValue = Model.Value<int?>("maxItems");
+    //    maxItemsValue = maxItemsValue.HasValue && maxItemsValue.Value > 0 ? maxItemsValue.Value : 20;
+    //}
+
+    maxItemsValue = int.MaxValue;
+
+    ArticleListModel articleListModel;
+    int? year = GetQueryStringValue("year");
+    int? month = GetQueryStringValue("month");
+    int? day = GetQueryStringValue("day");
+    articleListModel = new ArticleListModel(Model, year, month, day, null, true, maxItemsValue);
+    if (articleListModel != null)
+    {
+        if (rootArticlePage != null)
+        {
+            if (Model.Id != rootArticlePage.Id)
+            {
+                ViewData["Title"] = GDMWebHelper.GetPageTitle(rootArticlePage);
+            }
+            else
+            {
+                ViewData["Title"] = articleListModel.DisplayDate;
+            }
+        }
+    }
+    ViewData["ArticleListModel"] = articleListModel;
+    Layout = "masterPage.cshtml";
+    @await Html.PartialAsync("articleContent")
+}
+
+@functions {
+    public int? GetQueryStringValue(string param)
+    {
+        int? result = null;
+        if (!string.IsNullOrWhiteSpace(Context.Request.Query[param]))
+        {
+            if (int.TryParse(Context.Request.Query[param], out int value))
+            {
+                result = value;
+            }
+        }
+        return result;
+    }
+
+}

@@ -1,0 +1,90 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+  <PropertyGroup>
+    <TargetFramework>net6.0</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Remove="Views\MacroPartials\ImageButton.cshtml~RF237bb0c.TMP\**" />
+    <Compile Remove="Views\MacroPartials\MultipleNews.cshtml~RF1ba0038.TMP\**" />
+    <Content Remove="Views\MacroPartials\ImageButton.cshtml~RF237bb0c.TMP\**" />
+    <Content Remove="Views\MacroPartials\MultipleNews.cshtml~RF1ba0038.TMP\**" />
+    <EmbeddedResource Remove="Views\MacroPartials\ImageButton.cshtml~RF237bb0c.TMP\**" />
+    <EmbeddedResource Remove="Views\MacroPartials\MultipleNews.cshtml~RF1ba0038.TMP\**" />
+    <None Remove="Views\MacroPartials\ImageButton.cshtml~RF237bb0c.TMP\**" />
+    <None Remove="Views\MacroPartials\MultipleNews.cshtml~RF1ba0038.TMP\**" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Remove="wwwroot\css\news.css~RF1b5af64d.TMP" />
+    <Content Remove="wwwroot\css\news.css~RF8064e783.TMP" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Remove="Views\MacroPartials\ImageButton.cshtml~RF1ca9c6e2.TMP" />
+    <None Remove="Views\MacroPartials\MultipleNews.cshtml~RF1074b406.TMP" />
+    <None Remove="Views\MacroPartials\NewsPageView.cshtml~RF19a1c28.TMP" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="App_Plugins\GDM-SubpageList\prop.settings.html" />
+    <Content Include="App_Plugins\GDMEmbedVideo\EmbedVideo.html" />
+    <Content Include="App_Plugins\GDMImageCards\imagecards.html" />
+    <Content Include="App_Plugins\GDMLinkCards\editor.html" />
+    <Content Include="App_Plugins\GDMMultiClientCards\multiclientcards.html" />
+    <Content Include="App_Plugins\GDMMultiLinkPicker\multilinkpicker.html" />
+    <Content Include="App_Plugins\GDMMultiNewsCards\multinewscards.html" />
+    <Content Include="App_Plugins\GDMMultiSocialMediaCards\multisocialmediacards.html" />
+    <Content Include="App_Plugins\GDMMultiText\multitext.html" />
+    <Content Include="App_Plugins\GDMSingleLinkPicker\singlelinkpicker.html" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App_Plugins\GDM-SubpageList\package.manifest" />
+    <None Include="App_Plugins\GDM-SubpageList\prop.settings.controller.js" />
+    <None Include="App_Plugins\GDMEmbedVideo\package.manifest" />
+    <None Include="App_Plugins\GDMEmbedVideo\EmbedVideo.controller.js" />
+    <None Include="App_Plugins\GDMImageCards\ImageCards.controller.js" />
+    <None Include="App_Plugins\GDMImageCards\package.manifest" />
+    <None Include="App_Plugins\GDMLinkCards\LinkCards.controller.js" />
+    <None Include="App_Plugins\GDMLinkCards\package.manifest" />
+    <None Include="App_Plugins\GDMMultiClientCards\MultiClientCards.controller.js" />
+    <None Include="App_Plugins\GDMMultiClientCards\package.manifest" />
+    <None Include="App_Plugins\GDMMultiLinkPicker\multilinkpicker.controller.js" />
+    <None Include="App_Plugins\GDMMultiLinkPicker\package.manifest" />
+    <None Include="App_Plugins\GDMMultiNewsCards\MultiNewsCards.controller.js" />
+    <None Include="App_Plugins\GDMMultiNewsCards\package.manifest" />
+    <None Include="App_Plugins\GDMMultiSocialMediaCards\MultiSocialMediaCards.controller.js" />
+    <None Include="App_Plugins\GDMMultiSocialMediaCards\package.manifest" />
+    <None Include="App_Plugins\GDMMultiText\MultiText.controller.js" />
+    <None Include="App_Plugins\GDMMultiText\package.manifest" />
+    <None Include="App_Plugins\GDMSingleLinkPicker\package.manifest" />
+    <None Include="App_Plugins\GDMSingleLinkPicker\singlelinkpicker.controller.js" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="GDMUmbraco9AdminWidget" Version="10.0.0" />
+    <PackageReference Include="GDMUmbraco9GoogleMap" Version="9.0.35" />
+    <PackageReference Include="GDMUmbraco9MediaConfig" Version="9.0.3" />
+    <PackageReference Include="GDMUmbraco9News" Version="10.0.1" />
+    <PackageReference Include="GDMUmbraco9PageNotFound" Version="10.0.0" />
+    <PackageReference Include="GDMUmbraco9Robots" Version="9.0.3" />
+    <PackageReference Include="GDMUmbraco9SlickGallery" Version="10.0.10" />
+    <PackageReference Include="GDMUmbraco9StandardTypes" Version="10.0.2" />
+    <PackageReference Include="Umbraco.Cms" Version="10.2.1" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Opt-in to app-local ICU to ensure consistent globalization APIs across different platforms -->
+    <PackageReference Include="Microsoft.ICU.ICU4C.Runtime" Version="68.2.0.9" />
+    <RuntimeHostConfigurationOption Include="System.Globalization.AppLocalIcu" Value="68.2.0.9" Condition="$(RuntimeIdentifier.StartsWith('linux')) or $(RuntimeIdentifier.StartsWith('win')) or ('$(RuntimeIdentifier)' == '' and !$([MSBuild]::IsOSPlatform('osx')))" />
+  </ItemGroup>
+
+  <PropertyGroup>
+    <!-- Razor files are needed for the backoffice to work correctly -->
+    <CopyRazorGenerateFilesToPublishDirectory>true</CopyRazorGenerateFilesToPublishDirectory>
+  </PropertyGroup>
+
+  <PropertyGroup>
+    <!-- Remove RazorCompileOnBuild and RazorCompileOnPublish when not using ModelsMode InMemoryAuto -->
+    <RazorCompileOnBuild>false</RazorCompileOnBuild>
+    <RazorCompileOnPublish>false</RazorCompileOnPublish>
+  </PropertyGroup>
+
+</Project>

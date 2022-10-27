@@ -1,0 +1,64 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMImageCard;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+
+    string? title = (string?)Model.MacroParameters["title"];
+    string? content = (string?)Model.MacroParameters["content"];
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string>("profiles"));
+    List<ImageCard>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<ImageCard>>();
+    
+    bool valid = items != null && items.Count() > 0;
+}
+
+<div class="profileslider">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="main-title">
+                    <h2>@title</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="content">
+                    <p class="mb-5 mt-4">@content</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    <div class="profile">
+                        <div class="d-md-flex">
+                            @foreach (ImageCard item in items == null ? new List<ImageCard>() : items)
+                            {
+                                var image = Umbraco.Media(item.ImageId==null ? 0 : item.ImageId);
+                                <div class="col-md-3 col-12">
+                                    <div class="bg-white p-3 m-2">
+                                        <div class="individual_profile">
+                                            <div class="profile_border">
+                                                <img class="img-responsive mt-2" src="@image?.GetCropUrl(width: 220, height: 150,imageCropMode: ImageCropMode.Crop)" alt="@image?.Name" />
+                                                <hr class="line">
+                                                <p class="title">@item.Name</p>
+                                                <p class="description">@item.Designation</p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

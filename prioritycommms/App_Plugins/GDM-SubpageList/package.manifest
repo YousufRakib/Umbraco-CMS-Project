@@ -1,0 +1,17 @@
+﻿{
+  "propertyEditors": [
+    {
+      "alias": "GDM.SubpageList.Settings",
+      "name": "GDM Subpage List Settings",
+      "icon": "icon-wrench",
+      "isParameterEditor": true,
+      "editor": {
+        "view": "~/App_Plugins/GDM-SubpageList/prop.settings.html",
+        "valueType": "STRING"
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GDM-SubpageList/prop.settings.controller.js"
+  ]
+}

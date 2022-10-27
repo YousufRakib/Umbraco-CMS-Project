@@ -1,0 +1,70 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net
+@using GDMIconLink
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+    string? content = (string?)Model.MacroParameters["content"];
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string>("projects"));
+    List<IconLink>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<IconLink>>();
+
+    bool valid = items != null && items.Count() > 0;
+}
+<div class="projectslider">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="main-title">
+                    <h2>@title</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="content">
+                    <p class="mb-5 mt-4">@content</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    <div class="iconlinks panels">
+                        <div class="d-md-flex">
+                            @foreach (IconLink item in items == null ? new List<IconLink>(): items) {
+                                var image = Umbraco.Media(item.ImageId);
+                                bool haslink = item.Link != null && item.Link.Count > 0;
+                                string target = "";
+                                if (haslink)
+                                {
+                                    target = item.Link[0].Target;
+                                    target = string.IsNullOrEmpty(target) ? "" : " target=\"" + target + "\"";
+                                }
+                                string cssstyle = image == null ? "" : $"background-image: url('{@image.GetCropUrl(width: 300, height: 300)}')";
+                                <div class="col-md-3 col-12">
+                                    @if (haslink)
+                                    {
+                                        @:<a href="@item.Link[0].Url" @(new HtmlString(target))>
+                                    }                       
+                                    <div class="iconlink" style="@(new HtmlString(cssstyle))">
+                                        <div class="name">@item.Name</div>
+                                    </div>
+                                    @if (haslink)
+                                    {
+                                        @:</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+ 

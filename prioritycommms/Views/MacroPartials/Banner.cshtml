@@ -1,0 +1,20 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@{
+    string? imageIdVal = (string?)Model.MacroParameters["image"];
+    IPublishedContent? image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = image != null;
+}
+
+<div class="row m-auto banner">
+    <div class="col-6 p-0 banner-left">
+    </div>
+    <div class="col-6 p-0">
+        @if (valid)
+        {
+            <img src="@image?.Url()" alt="@image?.Name" />
+        }
+    </div>
+</div>
+
+

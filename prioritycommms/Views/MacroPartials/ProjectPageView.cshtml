@@ -1,0 +1,70 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMIconLink;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+
+    string? imageIdVal = (string?)Model.MacroParameters["coverPhoto"];
+    IPublishedContent? coverPhoto = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = coverPhoto != null;
+
+    string? itemsJson = WebUtility.HtmlDecode(Model.GetParameterValue<string>("items"));
+    List<IconLink>? items = itemsJson == null ? null : JArray.Parse(itemsJson).ToObject<List<IconLink>>();
+
+}
+
+<div class="projectpageview">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="coverPhoto">
+                @if (valid)
+                {
+                    <img src="@coverPhoto?.Url()" alt="@coverPhoto?.Name" />
+                    <h1 class="text-black text-center heading-bordered">@title</h1>
+                }
+            </div>
+
+            <div class="projectpagecontent">
+                <div class="iconlinks panels">
+                        <div class="d-md-flex">
+                            @foreach (IconLink item in items == null ? new List<IconLink>(): items) {
+                                var image = Umbraco.Media(item.ImageId);
+                                bool haslink = item.Link != null && item.Link.Count > 0;
+                                string target = "";
+                                if (haslink)
+                                {
+                                    target = item.Link[0].Target;
+                                    target = string.IsNullOrEmpty(target) ? "" : " target=\"" + target + "\"";
+                                }
+                                string cssstyle = image == null ? "" : $"background-image: url('{@image.GetCropUrl(width: 300, height: 300)}')";
+                                <div class="col-xl-3 col-lg-4 col-md-6">
+                                    @if (haslink)
+                                    {
+                                        @:<a href="@item.Link[0].Url" @(new HtmlString(target))>
+                                    }                       
+                                    <div class="iconlink" style="@(new HtmlString(cssstyle))">
+                                        <div class="name">@item.Name</div>
+                                    </div>
+                                    @if (haslink)
+                                    {
+                                        @:</a>
+                                    }
+                                </div>
+                            }
+                        </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

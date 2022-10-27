@@ -1,0 +1,115 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@using System.Net
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+    string? content = (string?)Model.MacroParameters["content"];
+    string? embedVideo = WebUtility.HtmlDecode(Model.MacroParameters["hTML"]?.ToString());
+
+    IPublishedContent? link1Page = null;
+    IPublishedContent? link2Page = null;
+    string? link1PageUdi = (string?)Model.MacroParameters["link1"];
+    //string? link1PageUdi = Model.MacroParameters["link1"].ToString();
+    if (!string.IsNullOrWhiteSpace(link1PageUdi))
+    {
+        link1Page = Umbraco.Content(link1PageUdi);
+    }
+
+    string? link2PageUdi = (string?)Model.MacroParameters["link2"];
+    //string? link2PageUdi = Model.MacroParameters["link2"].ToString();
+    if (!string.IsNullOrWhiteSpace(link2PageUdi))
+    {
+        link2Page = Umbraco.Content(link2PageUdi);
+    }
+
+    string? link1Name = link1Page == null ? null : link1Page.Name;
+    string? link1NameProp = Model.GetParameterValue<string?>("link1Name");
+    if (!string.IsNullOrWhiteSpace(link1NameProp))
+    {
+        link1Name = link1NameProp;
+    }
+
+    string? link2Name = link2Page == null ? null : link2Page.Name;
+    string? link2NameProp = Model.GetParameterValue<string?>("link2Name");
+    if (!string.IsNullOrWhiteSpace(link2NameProp))
+    {
+        link2Name = link2NameProp;
+    }
+
+    bool valid = title != null && content != null && embedVideo != null && link1Page != null && link1Page != null;
+}
+
+@if (isrenderedInBackOffice)
+{
+    <ul>
+        <li><strong>Title: </strong> @title</li>
+        <li><strong>Content: </strong> @content</li>
+        <li><strong>Link1: </strong> @(link1Page == null ? "" : link1Page.Url())</li>
+        <li><strong>Link2: </strong> @(link2Page == null ? "" : link2Page.Url())</li>
+    </ul>
+    if (!valid)
+    {
+        <div class="alert alert-danger">
+            Please select an image and a link
+        </div>
+    }
+}
+
+<div class="videobutton">
+    <div class="row">
+        <div class="col-lg-6 col-12">
+            <div class="video-panel-content">
+                <div>
+                    @if (!string.IsNullOrWhiteSpace(title))
+                    {
+                        <div class="main-title">
+                            <h2>@title</h2>
+                        </div>
+
+                        <div class="content">
+                            <p class="mb-4 mt-4">@content</p>
+                        </div>
+                    }
+                </div>
+
+                <div>
+                    <div class="bottom-button">
+                        <a type="button" class="btn quote" href="@link1Page?.Url()">
+                            @(new HtmlString(link1Name))
+                        </a>
+
+                        <a type="button" class="btn brochure" href="@link2Page?.Url()">
+                            @(new HtmlString(link2Name))
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="col-lg-6 col-12 px-0">
+            <div class="iframe_div">
+                @if (isrenderedInBackOffice)
+                {
+                    <div class="alert alert-info">Embed</div>
+                    if (string.IsNullOrWhiteSpace(content))
+                    {
+                        <div class="alert alert-danger">No content has been entered</div>
+                    }
+                }
+                else
+                {
+                    @Html.Raw(embedVideo)
+                }
+            </div>
+        </div>
+    </div>
+</div>
+
+
+
+

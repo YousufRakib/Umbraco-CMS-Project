@@ -1,0 +1,106 @@
+﻿
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoStandardTypes
+@using Microsoft.Extensions.Configuration
+@using Microsoft.Extensions.Options
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Core.Configuration.Models
+@using Umbraco.Cms.Core.Mail
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core.Models.Email
+@inject IEmailSender emailSender
+@inject IOptions<GlobalSettings> globalSettings
+@inject IConfiguration configuration
+@{
+    // Set to true in appSettings if email should be sent every time an invalid redirect page is viewed
+    /*
+     "GDM": {
+        "RedirectFailSendToGuru":  true
+    },
+    */
+    bool sendToGuruOnFail = configuration["GDM:RedirectFailSendToGuru"] == "True"; 
+    
+    Link link = Model.Value<Link>(StandardTypeConstants.RedirectPagePropertyTabAlias);
+    IPublishedContent page = null;
+    bool linkedPageIsRedirectPage = false;
+    if (link != null)
+    {
+        page = link.Udi == null ? null : (link.Udi.EntityType == Constants.UdiEntityType.Media ? Umbraco.Media(link.Udi) : Umbraco.Content(link.Udi));
+        if (page != null)
+        {
+            if (page.HasValue(StandardTypeConstants.RedirectPagePropertyTabAlias))
+            {
+                var pageLink = page.Value<IEnumerable<Link>>(StandardTypeConstants.RedirectPagePropertyTabAlias)?.FirstOrDefault();
+                linkedPageIsRedirectPage = page != null;
+            }
+        }
+    }
+}
+@if (link != null && link.Type == LinkType.External)
+{
+    Context.Response.Redirect(link.Url, false);
+}
+else
+{
+    if (page != null && !linkedPageIsRedirectPage)
+    {
+        Context.Response.Redirect(link.Url, false);
+    }
+    else
+    {
+        Context.Response.StatusCode = 500;
+        string subject = "Redirect Error";
+        string htmlContent = "<p>The target page of this redirect is unavailable, it has been removed, expired, or unpublished.</p>";
+        if (linkedPageIsRedirectPage)
+        {
+            htmlContent = "<p>Cannot redirect to a page that also redirects.</p>" +
+                "<p>Please change this page to redirect to a valid target.</p>";
+        }
+        if (sendToGuruOnFail)
+        {
+            SendNotification(emailSender, globalSettings, Model, link, "Website page - " + subject, htmlContent);
+        }
+        <!DOCTYPE html>
+        <html lang="en-nz">
+        <head>
+            <title>Redirecting...</title>
+        </head>
+        <body style="padding: 24px 48px; font-family: sans-serif;">
+            <h1 style="color: #F20; border-bottom: 1px solid #AAA;">@subject</h1>
+            @Html.Raw(htmlContent)
+        </body>
+        </html>
+
+    }
+}
+@functions {
+    public async void SendNotification(
+        IEmailSender emailSender,
+        IOptions<GlobalSettings> globalSettings,
+        IPublishedContent model,
+        Link link,
+        string subject,
+        string message
+    )
+    {
+        var request = Context.Request;
+        var host = request.Host.ToUriComponent();
+        var pathBase = request.PathBase.ToUriComponent();
+        string baseUrl = $"{request.Scheme}://{host}{pathBase}";
+        string editUrl = $"{baseUrl}/umbraco#/content/content/edit/{model.Id}";
+        string editLink = $"<p>Edit Page:<br/><a href=\"{editUrl}\">{editUrl}<a><p>";
+        string body = message += editLink;
+        var from = globalSettings.Value.Smtp.From;
+        var to = "info@gurudigital.nz";
+        EmailMessage emailMessage = new EmailMessage(from, to, subject, message, true);
+        try
+        {
+            await emailSender.SendAsync(emailMessage, emailType: "Alert");
+        }
+        catch
+        {
+            // ignore
+        }
+
+    }
+} 

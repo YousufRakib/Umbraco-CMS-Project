@@ -1,0 +1,114 @@
+@media (min-width: 768px) {
+    .profileslider {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 4%;
+        padding-bottom: 5%;
+    }
+}
+
+@media (max-width: 767px) {
+    .profileslider {
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 10%;
+        padding-bottom: 10%;
+    }
+}
+
+.profileslider .main-title{
+    text-align: center;
+    border-bottom: 10px solid #FDD201;
+    margin: auto;
+    width: fit-content;
+}
+
+.profileslider .main-title h2 {
+    margin: auto;
+    margin: 0;
+    margin-bottom: -5%;
+    color: #FFFFFF;
+    font-family:Bahnschrift SemiBold;
+}
+
+@media (min-width: 768px) {
+    .profileslider .content {
+        width: 50%;
+        text-align: center;
+        margin: auto;
+        color: #DADADB;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (max-width: 767px) {
+    .profileslider .content {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        color: #DADADB;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (min-width: 768px) {
+    .profileslider .profile {
+        width: 96%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 768px) {
+    .profileslider .profile {
+        width: 100%;
+        margin: auto;
+    }
+}
+
+.profileslider .profile_border hr.line {
+    width: 15%;
+    margin-left: 42%;
+    -webkit-transform: rotate(135deg);
+    border: 2px solid #FDD201;
+}
+
+.profileslider .individual_profile{
+    text-align:center;
+}
+
+.profileslider .individual_profile:hover .profile_border .line {
+    width: 14%;
+    margin-left: 42%;
+    -webkit-transform: rotate(0deg);
+    border: 2px solid #FDD201;
+}
+
+.profileslider .individual_profile .profile_border {
+    border: 3px solid white;
+}
+
+.profileslider .individual_profile:hover .profile_border {
+    border: 3px solid #FDD201;
+}
+
+.profileslider .individual_profile .title {
+    letter-spacing: -1px;
+    color: #000000;
+    font-family: Bahnschrift SemiBold;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-weight: bold;
+    text-align: center;
+}
+
+.profileslider .individual_profile .description {
+    font-size: 12px;
+    color: #3E3E3E;
+    font-weight: 600;
+    font-family: Bahnschrift Light;
+    text-align: center;
+}

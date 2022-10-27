@@ -1,0 +1,26 @@
+﻿@*
+    In order for this to work:
+    1. Add a Content Picker property to the home page "Search Page"
+    2. Add a Textstring property to the home page "Search Placeholder"
+    3. Add Nuget package GDMUmbraco9Solr or GDMUmbraco9Search
+    4. Add a Standard page
+    5. Add the Site Search Macro to the search page
+    6. Set the search page property on the home page
+*@
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoStandardTypes
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@{
+    IPublishedContent root = Model.Root();
+    IPublishedContent searchPage = root.Value<IPublishedContent>(StandardTypeConstants.SearchPagePropertyAlias);
+    string searchPlaceholder = root.Value<string>(StandardTypeConstants.SearchPlaceholderPropertyAlias);
+    HtmlString placeHolderHTML = new HtmlString(searchPlaceholder == null ? null : " placeHolder=\"" + searchPlaceholder + "\"");
+}
+@if (searchPage != null)
+{
+    <form class="d-flex" action="@searchPage.Url()">
+        <input class="form-control me-2" name="q" type="search" @(placeHolderHTML) aria-label="Search">
+        <button class="btn btn-outline-success" type="submit">Search</button>
+    </form>
+}

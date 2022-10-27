@@ -1,0 +1,84 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    string? title = (string?)Model.MacroParameters["title"];
+
+    string? imageIdVal = (string?)Model.MacroParameters["coverPhoto"];
+    IPublishedContent? image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = image != null;
+
+    string? heading = (string?)Model.MacroParameters["heading"];
+    string? content = (string?)Model.MacroParameters["content"];
+    string? link1FontAwesome = (string?)Model.MacroParameters["link1FontAwesome"];
+    string? link1 = (string?)Model.MacroParameters["link1"];
+    string? link2FontAwesome = (string?)Model.MacroParameters["link2FontAwesome"];
+    string? link2 = (string?)Model.MacroParameters["link2"];
+    string? link3FontAwesome = (string?)Model.MacroParameters["link3FontAwesome"];
+    string? link3 = (string?)Model.MacroParameters["link3"];
+    string? link4FontAwesome = (string?)Model.MacroParameters["link4FontAwesome"];
+    string? link4 = (string?)Model.MacroParameters["link4"];
+    string? phone = (string?)Model.MacroParameters["phone"];
+    string? email = (string?)Model.MacroParameters["email"];
+    string? address = (string?)Model.MacroParameters["address"];
+}
+
+
+
+<div class="contactusview">
+    <div class="row">
+        <div class="col-md-12">
+            <div class="coverPhoto">
+                @if (valid)
+                {
+                    <img src="@image?.Url()" alt="@image?.Name" />
+                    <h1 class="text-black text-center heading-bordered">@title</h1>
+                }
+            </div>
+
+            <div class="contactuscontent">
+                <div class="row">
+                    <div class="col-md-6 col-12">
+                        <div class="left">
+                            <h3>@heading</h3>
+                            <p>@content</p>
+                        </div>
+                    </div>
+                    <div class="col-md-6 col-12">
+                        <div class="right">
+                            <div class="row">
+                                <div class="col-12">
+                                    <h6>Get Social</h6>
+                                    <a href="@link1"><span class="@link1FontAwesome"></span></a>
+                                    <a href="@link2"><span class="@link2FontAwesome"></span></a>
+                                    <a href="@link3"><span class="@link3FontAwesome"></span></a>
+                                    <a href="@link4"><span class="@link4FontAwesome"></span></a>
+                                </div>
+                                <div class="col-12">
+                                    <h6>Phone</h6>
+                                    <p><i class="fa fa-phone"></i>&nbsp; @phone</p>
+                                </div>
+                                <div class="col-12">
+                                    <h6>Email</h6>
+                                    <p><i class="fa-solid fa-envelope"></i>&nbsp; @email</p>
+                                </div>
+                                <div class="col-12">
+                                    <h6>Address</h6>
+                                    <p><i class="fa-solid fa-location-dot"></i>&nbsp; @address</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+

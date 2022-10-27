@@ -1,0 +1,173 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using GDMUmbracoNews
+@using Umbraco.Cms.Core.Models
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Net;
+@using GDMMultiNews;
+@using GDMUmbracoCommon
+@using GDMUmbracoStandardTypes
+
+@{
+    bool isrenderedInBackOffice = UmbracoContext != null && !UmbracoContext.IsFrontEndUmbracoRequest();
+
+    //IPublishedContent? linkPage = null;
+    //string? linkPageUdi = (string?)Model.MacroParameters["link"];
+    //if (!string.IsNullOrWhiteSpace(linkPageUdi))
+    //{
+    //    linkPage = Umbraco.Content(linkPageUdi);
+    //}
+
+    //string? linkName = linkPage == null ? null : linkPage.Name;
+    //string? linkNameProp = Model.GetParameterValue<string?>("linkName");
+    //if (!string.IsNullOrWhiteSpace(linkNameProp))
+    //{
+    //    linkName = linkNameProp;
+    //}
+
+
+    string? title = (string?)Model.MacroParameters["title"];
+    if (string.IsNullOrWhiteSpace(title))
+    {
+        title = "News";
+    }
+
+    string? content = (string?)Model.MacroParameters["content"];
+
+    IPublishedContent? newsPage = null;
+    string? newsPageUdi = Model.MacroParameters["newsPage"]?.ToString();
+    if (!string.IsNullOrWhiteSpace(newsPageUdi))
+    {
+        newsPage = Umbraco.Content(newsPageUdi);
+    }
+
+    List<IPublishedContent>? newsPages = null;
+
+    bool valid = newsPage != null && newsPage.ContentType.Alias == "newsRoot";
+    bool populated = false;
+
+    string? linkName = newsPage == null ? null : newsPage.Name;
+    string? linkNameProp = Model.GetParameterValue<string?>("buttonName");
+    if (!string.IsNullOrWhiteSpace(linkNameProp))
+    {
+        linkName = linkNameProp;
+    }
+
+    if (valid)
+    {
+        var articleListModel = new ArticleListModel(newsPage, null, null, null, null, true, 4);
+        newsPages = articleListModel?.GetNewsPages();
+        populated = newsPages != null && newsPages.Count > 0;
+    }
+}
+
+@if (isrenderedInBackOffice)
+{
+    if (!valid)
+    {
+        <div class="alert alert-danger">
+            Please enter a News Root Page
+        </div>
+    }
+}
+@if (valid && populated)
+{
+    <div class="multiplenews">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="main-title">
+                        <h2>@title</h2>
+                    </div>
+                </div>
+                @if (!string.IsNullOrWhiteSpace(content))
+                {
+                    <div class="col-12">
+                        <div class="content">
+                            <p class="mb-5 mt-4">@content</p>
+                        </div>
+                    </div>
+                }
+                <div class="col-12">
+                    <div class="row">
+                        <div class="news">
+                            <div class="d-md-flex justify-content-center">
+                                @if (newsPages != null)
+                                {
+                                    @foreach (var item in newsPages)
+                                    {
+                                        var picture = item.Value<IPublishedContent>("teaserImage");
+                                        <div class="col-md-3 col-12">
+                                            <div class="bg-white m-0 m-md-2 mb-4">
+                                                <div class="_border">
+                                                    <a href="@item.Url()" title="@item.Name">
+                                                        <img class="img-responsive" src="@picture?.GetCropUrl(width: 220, height: 150,imageCropMode: ImageCropMode.Crop)" alt="@picture?.Name" />
+                                                    </a>
+                                                    <p class="title"><a href="@item?.Url()">@item.Name</a></p>
+                                                    <p class="description" id="contect">@GDMWebHelper.GetSummaryText(item, 90, true)</p>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    }
+                                }
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="bottom-button">
+                    <a type="button" class="btn btn-warning justify-content-center text-center mb-2 load-more" href="@newsPage?.Url()">
+                        @(new HtmlString(linkName))
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+}
+
+@*<div class="multiplenews">
+    <div class="container">
+        <div class="row">
+            <div class="col-12">
+                <div class="main-title">
+                    <h2>@title</h2>
+                </div>
+            </div>
+            <div class="col-12">
+                <div class="content">
+                    <p class="mb-5 mt-4">@content</p>
+                </div>
+            </div>
+
+            <div class="col-12">
+                <div class="row">
+                    <div class="news">
+                        <div class="d-md-flex justify-content-center">
+                            @foreach (MultiNews item in items == null ? new List<MultiNews>(): items)
+                            {
+                                var image = Umbraco.Media(item.ImageId == null ? 0 : item.ImageId);
+                                <div class="col-md-3 col-12">
+                                    <div class="bg-white m-0 m-md-2 mb-4">
+                                        <div class="_border">
+                                            <img class="img-responsive" src="@image?.GetCropUrl(width: 220, height: 150,imageCropMode: ImageCropMode.Crop)" alt="@image?.Name" />
+                                            <p class="title">@item.Title</p>
+                                            <p class="description" id="contect">@item.Content</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            }
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="bottom-button">
+                <button type="button" class="btn btn-warning justify-content-center text-center mb-2 load-more">Read Our News</button>
+            </div>
+        </div>
+    </div>
+</div>*@
+
+

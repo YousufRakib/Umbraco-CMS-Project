@@ -1,0 +1,18 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoStandardTypes
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@{
+    IPublishedContent? root = Model.Root();
+}
+@if (root != null && root.HasValue("tagManagerBody"))
+{
+    @(new HtmlString(root.Value<string>("tagManagerBody")))
+}
+@await Html.PartialAsync("Master/EnvironmentHeader")
+@await Html.PartialAsync("Master/AdminWidget")
+@await Html.PartialAsync("Master/TopHeader")
+<div class="navbar-container">
+    @await Html.PartialAsync("Master/MainNavigation")
+</div>
+

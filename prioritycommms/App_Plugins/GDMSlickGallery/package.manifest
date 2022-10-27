@@ -1,0 +1,23 @@
+﻿{
+  "gridEditors": [
+    {
+      "name": "Gallery",
+      "alias": "slickgallery",
+      "view": "macro",
+      "icon": "icon-slideshow",
+      "config": {
+        "macroAlias": "Gallery"
+      }
+    },
+    {
+      "name": "Simple Gallery",
+      "alias": "simplegallerymacro",
+      "view": "macro",
+      "icon": "icon-slideshow",
+      "config": {
+        "macroAlias": "SimpleGallery"
+      }
+    }
+
+  ]
+ }

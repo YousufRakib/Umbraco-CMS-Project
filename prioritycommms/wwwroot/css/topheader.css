@@ -1,0 +1,46 @@
+﻿.topheader {
+    background-color: #151515;
+    color: #fff;
+}
+
+@media (min-width: 768px) {
+    .topheader .bottom-button {
+        width: 100%;
+        color: #4D420F;
+    }
+
+    .topheader .bottom-button a{
+        text-align: center;
+        border-radius: .25rem;
+        margin:auto;
+        background-color: #FDD201;
+        font-family: Bahnschrift SemiBold;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+    }
+}
+
+@media (max-width: 767px) {
+    .topheader .bottom-button {
+        width: 100%;
+        color: #4D420F;
+    }
+
+    .topheader .bottom-button a{
+        text-align: center;
+        border-radius: 0px;
+        margin:auto;
+        background-color: #FDD201;
+        font-family: Bahnschrift SemiBold;
+        box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+    }
+}
+
+.topheader .pt-3 {
+    font-family: Bahnschrift SemiBold;
+    color: #F0F0F0;
+}
+
+.topheader .ps-2 {
+    font-family: Cambria;
+    color: #BDBDBD;
+}

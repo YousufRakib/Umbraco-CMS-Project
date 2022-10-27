@@ -1,0 +1,29 @@
+﻿{
+  "gridEditors": [
+    {
+      "name": "Icon Links",
+      "alias": "iconlinksmacro",
+      "view": "macro",
+      "icon": "icon-link",
+      "config": {
+        "macroAlias": "IconLinks"
+      }
+    }
+  ],
+  "propertyEditors": [
+    {
+      "alias": "GDM.GDMMultiNewsCards",
+      "name": "GDM Multi News Cards",
+      "icon": "icon-thumbnail-list",
+      "isParameterEditor": true,
+      "editor": {
+        "view": "~/App_Plugins/GDMMultiNewsCards/multinewscards.html",
+        "valueType": "JSON"
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GDMOverlay/overlayhelper.js",
+    "~/App_Plugins/GDMMultiNewsCards/MultiNewsCards.controller.js"
+  ]
+}

@@ -1,0 +1,29 @@
+﻿{
+  "gridEditors": [
+    {
+      "name": "Icon Links",
+      "alias": "iconlinksmacro",
+      "view": "macro",
+      "icon": "icon-thumbnail-list",
+      "config": {
+        "macroAlias": "IconLinks"
+      }
+    }
+  ],
+  "propertyEditors": [
+    {
+      "alias": "GDM.GDMMultiText",
+      "name": "GDM Multi Text",
+      "icon": "icon-thumbnail-list",
+      "isParameterEditor": true,
+      "editor": {
+        "view": "~/App_Plugins/GDMMultiText/multitext.html",
+        "valueType": "JSON"
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GDMOverlay/overlayhelper.js",
+    "~/App_Plugins/GDMMultiText/MultiText.controller.js"
+  ]
+}

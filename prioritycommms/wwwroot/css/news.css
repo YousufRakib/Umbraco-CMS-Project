@@ -1,0 +1,131 @@
+@media (min-width: 768px) {
+    .multiplenews {
+        background-color: #F7F6F0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 4%;
+        padding-bottom: 3%;
+    }
+}
+
+@media (max-width: 767px) {
+    .multiplenews {
+        background-color: #F7F6F0;
+        width: 100%;
+        margin: 0;
+        padding: 0;
+        padding-top: 12%;
+        padding-bottom: 10%;
+    }
+}
+
+.multiplenews .main-title {
+    text-align: center;
+    /*justify-content:center;
+    display: flex;*/
+    border-bottom: 10px solid #FDD201;
+    margin: auto;
+    width: fit-content;
+    /*left: 0px;
+    right: 0px;*/
+}
+
+.multiplenews .main-title h2 {
+    margin: auto;
+    margin: 0;
+    margin-bottom: -9%;
+    color: #525252;
+    font-family: Bahnschrift SemiBold;
+}
+
+@media (min-width: 768px) {
+    .multiplenews .content {
+        width: 50%;
+        text-align: center;
+        margin: auto;
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (max-width: 767px) {
+    .multiplenews .content {
+        width: 100%;
+        text-align: center;
+        margin: auto;
+        color: #7A7A7A;
+        font-weight: 600;
+        font-size: 15px;
+        font-family: Bahnschrift Light;
+    }
+}
+
+@media (min-width: 768px) {
+    .multiplenews .news {
+        width: 96%;
+        margin: auto;
+    }
+}
+
+@media (max-width: 767px) {
+    .multiplenews .news {
+        width: 100%;
+        margin: auto;
+        padding: 8%;
+    }
+}
+
+.multiplenews .news ._border {
+    height: 100%;
+    width: 100%;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}
+
+.multiplenews .news img {
+    width: 100%;
+    height: 50%
+}
+
+.multiplenews .news ._border .title {
+    letter-spacing: -1px;
+    color: #000000;
+    font-family: Bahnschrift SemiBold;
+    margin-top: 5%;
+    margin-bottom: 5%;
+    font-weight: bold;
+    text-align: left;
+    padding: 0% 4%;
+}
+
+.multiplenews .news ._border .title a{
+    text-decoration: none;
+    color: #000000;
+}
+
+.multiplenews ._border .description {
+    font-size: 12px;
+    color: #A2A2A2;
+    font-weight: 600;
+    font-family: Bahnschrift Light;
+    text-align: left;
+    padding: 0% 4%;
+    padding-bottom: 8%;
+}
+
+.multiplenews .bottom-button {
+    text-align: center;
+    width: 100%;
+    margin-top:2%;
+}
+
+.multiplenews .bottom-button button{
+    text-align: center;
+    border-radius:0;
+    margin:auto;
+    background-color: #FDD201;
+    font-family: Bahnschrift SemiBold;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}

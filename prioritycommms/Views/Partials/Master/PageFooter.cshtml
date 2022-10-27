@@ -1,0 +1,38 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@{
+    IPublishedContent? root = Model.Root();
+    IEnumerable<Link>? links = root?.Value<IEnumerable<Link>>("footerLinks");
+}
+
+<div class="pagefooter">
+    @if(root!=null){
+        @Html.GetGridHtml(root, "footerContent", "Bootstrap5")
+    }
+</div>
+<div class="bottomfooter">
+    <div class="container">
+        <div class="row">
+            <div class="col">
+                <p>&copy;@(DateTime.Now.Year) Priority Communications. Privacy Policy</p>
+            </div>
+            <div class="col-md-auto">
+                <div class="d-flex d-md-inline">
+                    @if (links != null)
+                    {
+                        foreach (var link in links)
+                        {
+                            string target = "";
+                            if (!string.IsNullOrWhiteSpace(link.Target))
+                            {
+                                target = $"target=\"{link.Target}\"";
+                            }
+                            <a href="@link.Url" @(new HtmlString(target))>@link.Name</a>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

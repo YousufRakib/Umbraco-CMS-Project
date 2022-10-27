@@ -1,0 +1,12 @@
+﻿@using Microsoft.AspNetCore.Hosting
+@inject IWebHostEnvironment hostingEnvironment
+@using Smidge
+@{
+    string environment = hostingEnvironment.EnvironmentName;
+
+}
+<environment include="Development,Staging">
+    <div class="environment environment-@environment">
+        @environment Environment
+    </div>
+</environment>

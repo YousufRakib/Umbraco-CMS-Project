@@ -1,0 +1,39 @@
+
+html {
+    height: 100%;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    flex-direction: column;
+    -ms-flex-direction: column;
+    height: 100%;
+}
+
+header {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0;
+    -ms-flex: none;
+    flex: none;
+}
+
+main {
+    -webkit-box-flex: 1;
+    -webkit-flex: 1 0 auto;
+    -ms-flex: 1 0 auto;
+    flex: 1 0 auto;
+    flex-basis: auto;
+    min-height: 1px;
+    position: relative;
+}
+
+footer {
+    -webkit-box-flex: 0;
+    -webkit-flex: 0;
+    -ms-flex: none;
+    flex: none;
+    position: relative;
+}

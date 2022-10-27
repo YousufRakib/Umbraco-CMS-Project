@@ -1,0 +1,67 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Umbraco.Cms.Core
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+
+@{
+    string? title = (string?)Model.MacroParameters["title"];
+    string? content = (string?)Model.MacroParameters["content"];
+
+    IPublishedContent? linkPage = null;
+    string? linkPageUdi = (string?)Model.MacroParameters["link"];
+    if (!string.IsNullOrWhiteSpace(linkPageUdi))
+    {
+        linkPage = Umbraco.Content(linkPageUdi);
+    }
+
+    string? linkName = linkPage == null ? null : linkPage.Name;
+    string? linkNameProp = Model.GetParameterValue<string?>("linkName");
+    if (!string.IsNullOrWhiteSpace(linkNameProp))
+    {
+        linkName = linkNameProp;
+    }
+
+    string? imageIdVal = (string?)Model.MacroParameters["image"];
+    IPublishedContent? image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    bool valid = image != null;
+}
+<div class="imagebutton">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-6 col-12 order-2 order-md-1">
+                <div class="p-4">
+                    @if (valid)
+                    {
+                        <img src="@image?.Url()" alt="@image?.Name" />
+                    }
+                </div>
+            </div>
+
+            <div class="col-lg-6 col-12 order-1 order-md-2">
+                <div class="p-lg-5 p-3">
+                    @if (!string.IsNullOrWhiteSpace(title))
+                    {
+                        <div class="ms-0 ms-lg-5">
+                            <div class="main-title">
+                                <h2>@title</h2>
+                            </div>
+                        </div>
+                        <div class="pt-1 pt-lg-1 ms-0 ms-lg-5">
+                            <div class="content">
+                                <p class="mb-4 mt-4">@content</p>
+                            </div>
+                        </div>
+                    }
+
+                    <div class="ms-0 ms-lg-5">
+                        <div class="bottom-button">
+                            <a type="button" class="btn btn-warning" href="@linkPage?.Url()">
+                                @(new HtmlString(linkName))
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

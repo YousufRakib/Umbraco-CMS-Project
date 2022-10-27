@@ -1,0 +1,124 @@
+﻿.simplegallery .thumbs {
+    display: none;
+}
+
+
+@media (min-width: 992px) {
+    .simplegallery .thumbs {
+        display: block;
+    }
+
+
+    .simplegallery .row > .col-lg-8 {
+        padding-right: 0;
+    }
+
+    .simplegallery .row > .col-lg-3 {
+        padding-left: 10px;
+    }
+
+    .simplegallery .row > .col-6:first-child {
+        padding-right: 5px;
+    }
+
+    .simplegallery .row > .col-6:last-child {
+        padding-left: 5px;
+    }
+}
+
+.simplegallery .slick-arrow {
+    position: absolute;
+    display: block;
+    padding: 0;
+    top: 50%;
+    padding: 0 12px;
+    cursor: pointer;
+    color: #FFF !important;
+    border: none;
+    outline: none;
+    background: transparent;
+    text-shadow: 1px 1px 4px #000;
+    -webkit-transform: translate(0,-50%);
+    -ms-transform: translate(0,-50%);
+    transform: translate(0,-50%);
+    font-size: 42px !important;
+}
+
+.simplegallery .gdm-slick-next {
+    right: 0;
+    z-index: 100;
+    cursor: pointer;
+
+}
+
+.simplegallery .gdm-slick-prev {
+    left: 0;
+    z-index: 100;
+    cursor: pointer;
+}
+
+.simplegallery .thumb {
+    cursor: pointer;
+    margin-bottom: 10px;
+    background-size: cover;
+}
+
+.simplegallery .mi-slick a {
+    display: block;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.simplegallery .mi-slick .inner {
+    height: 340px;
+    width: 100%;
+    display: block;
+}
+
+.simplegallery .mi-slick .gdm-slick-prev img {
+    -webkit-transform: scaleX(-1);
+    transform: scaleX(-1);
+}
+
+@media (min-width: 768px) {
+    .simplegallery .mi-slick .inner {
+        height: 459px;
+    }
+}
+
+@media (min-width: 992px) {
+    .simplegallery .mi-slick .inner {
+        height: 414px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .simplegallery .mi-slick .inner {
+        height: 493px;
+    }
+}
+
+@media (min-width: 1400px) {
+    .simplegallery .mi-slick .inner {
+        height: 572px;
+    }
+}
+
+#simplegallerytabs {
+    border-bottom: none;
+    background-color: #f0f0f0;
+    border-left: 16px solid #00b4a0;
+    margin-bottom: 8px;
+}
+
+    #simplegallerytabs.nav-tabs .nav-link {
+        border-right: none;
+        border-left: none;
+    }
+
+        #simplegallerytabs.nav-tabs .nav-link.active,
+        #simplegallerytabs.nav-tabs .nav-link:hover {
+            background-color: transparent;
+            border-bottom: 2px solid #000;
+            font-weight: bold;
+        }

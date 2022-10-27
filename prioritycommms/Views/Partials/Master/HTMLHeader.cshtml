@@ -1,0 +1,39 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using GDMUmbracoCommon
+@using GDMUmbracoStandardTypes
+@using Umbraco.Cms.Web.Common.PublishedModels
+@using Umbraco.Cms.Core.Models
+@{
+    Layout = null;
+    IPublishedContent? root = Model.Root();
+    string pageTitle = GDMWebHelper.GetPageTitle(Model, ViewData, " - ", Context);
+    string? pageDescription = Model.Value<string>(StandardTypeConstants.MetaDescriptionPropertyAlias);
+    if (string.IsNullOrWhiteSpace(pageDescription))
+    {
+        pageDescription = GDMWebHelper.GetSummaryText(Model, 200);
+    }
+    string baseUrl = $"{Context.Request.Scheme}://{Context.Request.Host}{Context.Request.PathBase}";
+    string url = $"{baseUrl}{Context.Request.Path}{Context.Request.QueryString}";
+}
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="author" content="Priority Communications" />
+<meta property="og:type" content="website" />
+<meta property="og:url" content="@url" />
+<meta property="og:description" content="@pageDescription" />
+<meta property="og:locale" content="en_NZ" />
+<meta property="og:title" content="@pageTitle" />
+
+<meta property="twitter:card" content="summary">
+<meta property="twitter:url" content="@url">
+<meta property="twitter:title" content="@pageTitle">
+<meta property="twitter:description" content="@pageDescription">
+
+<title>@pageTitle</title>
+<meta name="description" content="@pageDescription" />
+
+@if (root != null && root.HasValue("tagManagerHead"))
+{
+    @(new HtmlString(root.Value<string>("tagManagerHead")))
+}
+

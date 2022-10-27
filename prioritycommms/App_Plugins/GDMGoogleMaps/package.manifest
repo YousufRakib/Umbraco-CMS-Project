@@ -1,0 +1,96 @@
+﻿{
+  "gridEditors": [
+    {
+      "name": "Google Map",
+      "alias": "googlemap",
+      "view": "macro",
+      "icon": "icon-map-location",
+      "config": {
+        "macroAlias": "GoogleMap"
+      }
+    }
+  ],
+  "propertyEditors": [
+    {
+      "alias": "Umbraco.GMaps",
+      "name": "Google Map",
+      "icon": "icon-map-location",
+      "group": "Rich Content",
+      "isParameterEditor": true,
+      "editor": {
+        "view": "~/App_Plugins/GDMGoogleMaps/views/gmaps.editor.html",
+        "valueType": "JSON"
+      },
+      "prevalues": {
+        "fields": [
+          //{
+          //  "label": "Google API Key",
+          //  "description": "Your Google Maps API Key",
+          //  "key": "apikey",
+          //  "view": "textstring",
+          //  "validation": [
+          //    {
+          //      "type": "Required"
+          //    }
+          //  ]
+          //},
+          {
+            "label": "Default coordinates",
+            "description": "The coordinates (lat, long) of the this map will show. Example: 52.379189, 4.899431",
+            "key": "location",
+            "view": "textstring"
+          },
+          {
+            "label": "Default zoom",
+            "description": "The default zoom level of the map",
+            "key": "zoom",
+            "view": "number"
+          },
+          {
+            "label": "Map type",
+            "description": "The type of the map",
+            "key": "maptype",
+            "view": "radiobuttonlist",
+            "config": {
+              "prevalues": [
+                {
+                  "key": "roadmap",
+                  "value": "roadmap",
+                  "label": "Roadmap"
+                },
+                {
+                  "key": "hybrid",
+                  "value": "hybrid",
+                  "label": "Hybrid"
+                },
+                {
+                  "key": "satellite",
+                  "value": "satellite",
+                  "label": "Satellite"
+                },
+                {
+                  "key": "terrain",
+                  "value": "terrain",
+                  "label": "Terrain"
+                },
+                {
+                  "key": "styledmap",
+                  "value": "styled_map",
+                  "label": "Styled map"
+                }
+              ]
+            }
+          }
+        ]
+      }
+    }
+  ],
+  "javascript": [
+    "~/App_Plugins/GDMGoogleMaps/js/gmaps.factory.js",
+    "~/App_Plugins/GDMGoogleMaps/js/gmaps.controller.js",
+    "~/App_Plugins/GDMGoogleMaps/js/gmaps.display.js"
+  ],
+  "css": [
+    "~/App_Plugins/GDMGoogleMaps/css/gmaps.css"
+  ]
+}

@@ -1,0 +1,44 @@
+﻿
+@*
+    This template should not be changed
+    Change the associated partial views as needed
+*@
+@using Umbraco.Cms.Web.Common.PublishedModels;
+@using Microsoft.AspNetCore.Hosting
+@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@inject IWebHostEnvironment hostingEnvironment
+@{
+    Layout = null;
+    string environment = hostingEnvironment.EnvironmentName;
+}
+<!DOCTYPE html>
+<html lang="en-nz">
+<head>
+    @await Html.PartialAsync("Master/HTMLHeader") @* title, meta tags etc *@
+    @await Html.PartialAsync("Master/RequirementsCSS") @* Stylesheet dependencies *@
+    <environment include="Development">
+        <link rel="stylesheet" href="styles" debug="true" />
+    </environment>
+    <environment include="Staging,Production">
+        <link rel="stylesheet" href="styles"/>
+    </environment>
+</head>
+<body class="@Model.ContentType.Alias.ToLower()">
+    <header>
+        @await Html.PartialAsync("Master/PageHeader")
+    </header>
+    <main>
+        @RenderBody()
+    </main>
+    <footer>
+        @await Html.PartialAsync("Master/PageFooter")
+    </footer>
+    @await Html.PartialAsync("Master/RequirementsJS") @* Javascript dependencies *@
+    <environment include="Development">
+        <script defer="defer" src="scripts" debug="true"></script>
+    </environment>
+    <environment include="Staging,Production">
+        <script defer="defer" src="scripts"></script> @* scripts is the name of bundle ref: https://github.com/Shazwazza/Smidge/wiki/Bundling-strategies *@
+    </environment>
+</body>
+</html>

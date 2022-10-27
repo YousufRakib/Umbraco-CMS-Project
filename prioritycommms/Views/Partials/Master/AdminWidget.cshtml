@@ -1,0 +1,55 @@
+﻿@inherits Umbraco.Cms.Web.Common.Views.UmbracoViewPage
+@using Umbraco.Cms.Core
+@using Microsoft.Extensions.Options
+@using Microsoft.AspNetCore.Authentication.Cookies
+@using Microsoft.Extensions.DependencyInjection
+@using Microsoft.AspNetCore.Authentication
+@using System.Security.Claims
+@using Umbraco.Extensions
+
+@{
+    bool isadmin = false;
+    var cookieOptions = Context.RequestServices.GetRequiredService<IOptionsSnapshot<CookieAuthenticationOptions>>().Get(Constants.Security.BackOfficeAuthenticationType);
+
+    if (cookieOptions != null && cookieOptions.Cookie.Name != null)
+    {
+        string? cookie = Context?.Request.Cookies[cookieOptions.Cookie.Name!];
+
+        if (cookie != null)
+        {
+            AuthenticationTicket? unprotected = cookieOptions.TicketDataFormat.Unprotect(cookie!);
+
+            if (unprotected != null)
+            {
+                ClaimsIdentity? identity = unprotected!.Principal.GetUmbracoIdentity();
+
+                isadmin = identity != null;
+            }
+        }
+    }
+    var id = Model.Id.ToString();
+    if (Model.ContentType.Alias == "storyDisplay")
+    {
+        if (!string.IsNullOrWhiteSpace(Context?.Request.Query["id"].ToString()))
+        {
+            id = Context.Request.Query["id"].ToString();
+        }
+    }
+}
+
+@if (isadmin)
+{
+    <div class="admin-widget-wrapper">
+        <div class="container">
+            <div class="admin-widget">
+                <a href="#" class="admin-widget-toggle" data-bs-toggle="collapse" data-bs-target="#admin-widget-dropdown" aria-expanded="false"><img src="~/img/umbraco_logo.png" alt="Admin widget" /></a>
+                <ul id="admin-widget-dropdown" class="collapse list-unstyled">
+                    <li><a href="/umbraco/#/content/content/edit/@id" target="_blank">Edit this page</a></li>
+                    <li><a href="/umbraco/#/media" target="_blank">Media / Files</a></li>
+                    <li class="divider"></li>
+                    <li><a href="/umbraco" target="_blank">Backoffice</a></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+}

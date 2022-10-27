@@ -1,0 +1,46 @@
+﻿.mainnav.navbar-light .navbar-nav .nav-link {
+    color: #151515;
+    font-weight: 700;
+}
+
+.mainnav.navbar-light .navbar-nav .nav-link:hover  {
+    color: #FFE500;
+    font-weight: 700;
+}
+
+.mainnav .row{
+    width:100%;
+
+}
+
+.mainnav .row li a{
+    font-family: Bahnschrift SemiBold;
+    color: #BDBDBD;
+}
+
+.mainnav .row .menu{
+    padding-right: 0px;
+}
+
+.mainnav .row .menu ul li{
+    padding: 0px 12px;
+}
+
+.mainnav .row .menu #mainnav-content{
+    float: right;
+    padding-top: 2%;
+}
+
+.mainnav .bottom-button {
+    width: 100%;
+    color: #4D420F;
+}
+
+.mainnav .bottom-button a{
+    text-align: center;
+    border-radius:0;
+    margin:auto;
+    background-color: #FDD201;
+    font-family: Bahnschrift SemiBold;
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.1), 0 4px 20px 0 rgba(0, 0, 0, 0.1);
+}

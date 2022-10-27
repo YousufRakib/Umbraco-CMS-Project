@@ -1,0 +1,76 @@
+﻿@inherits Umbraco.Cms.Web.Common.Macros.PartialViewMacroPage
+@using Newtonsoft.Json;
+@using Newtonsoft.Json.Linq;
+@using System.Web
+@using GDMGoogleMaps
+@using Microsoft.Extensions.Configuration
+@using Umbraco.Cms.Core.Models.PublishedContent
+@using Umbraco.Extensions
+@inject IConfiguration Configuration
+@{
+    string mapData = HttpUtility.HtmlDecode(Model.MacroParameters["map"].ToString());
+    GoogleMapInfo mapInfo = JsonConvert.DeserializeObject<GoogleMapInfo>(mapData);
+    string markerContent = Model.MacroParameters["markerContent"].ToString();
+    string imageIdVal = (string)Model.MacroParameters["image"];
+    IPublishedContent image = !string.IsNullOrWhiteSpace(imageIdVal) ? Umbraco.Media(imageIdVal) : null;
+    var includeLink = (string)Model.MacroParameters["includeLink"] == "1";
+    var title = (string)Model.MacroParameters["title"];
+    string heightStr = Model.MacroParameters["height"].ToString();
+    int.TryParse(heightStr, out int height);
+    if (height < 100 || height > 1024)
+    {
+        height = 500;
+    }
+    var mapLink = "https://www.google.com/maps/@?api=1&map_action=map&center="
+        + mapInfo.Address.LatLng
+        + "&zoom=" + mapInfo.Config.Zoom
+        + "&basemap=" + mapInfo.Config.MapType;
+     bool isrenderedInBackOffice = !UmbracoContext.IsFrontEndUmbracoRequest();
+   
+
+}
+@if (isrenderedInBackOffice)
+{
+    <div class="alert alert-info">Google Map</div>
+    <ul>
+        <li><strong>LatLng: </strong>@mapInfo.Address.LatLng</li>
+        <li><strong>Zoom: </strong>@mapInfo.Config.Zoom</li>
+        <li><strong>Map Type: </strong>@mapInfo.Config.MapType</li>
+    </ul>
+}
+else
+{
+    <div class="gmap"
+         data-gmap-apikey="@Configuration["AppSettings:GoogleMapsAPIKey"]"
+         data-latlng="@mapInfo.Address.LatLng"
+         data-lat="@mapInfo.Address.Latitude"
+         data-lng="@mapInfo.Address.Longitude"
+         data-zoom="@mapInfo.Config.Zoom"
+         data-maptype="@mapInfo.Config.MapType"
+         data-mapcenter="@mapInfo.Config.MapCenter"
+         data-markercontent="@markerContent"
+         data-markerimage="@(image == null ? "" : image.GetCropUrl(150))"
+         data-markertitle="@title"
+         data-markerincludelink="@includeLink"
+         data-height="@height">
+        @if (!UmbracoContext.IsFrontEndUmbracoRequest())
+        {
+            @* data attributes are stripped in backoffice so use divs *@
+            <div class="map-data">
+                <div class="apikey">@Configuration["AppSettings:GoogleMapsAPIKey"]</div>
+                <div class="latlng">@mapInfo.Address.LatLng</div>
+                <div class="lat">@mapInfo.Address.Latitude</div>
+                <div class="lng">@mapInfo.Address.Longitude</div>
+                <div class="zoom">@mapInfo.Config.Zoom</div>
+                <div class="maptype">@mapInfo.Config.MapType</div>
+                <div class="mapcenter">@mapInfo.Config.MapCenter</div>
+                <div class="markercontent">@markerContent</div>
+                <div class="markerimage">@(image == null ? "" : image.GetCropUrl(150))</div>
+                <div class="markertitle">@title</div>
+                <div class="markerincludelink">@includeLink</div>
+                <div class="height">@height</div>
+            </div>
+        }
+        <div class="googlemap" style="height:@(height)px;"></div>
+    </div>
+}
